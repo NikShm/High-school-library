@@ -1,0 +1,53 @@
+footer {
+    padding: 2rem 9%;
+}
+
+.box-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.box h3 {
+    color: #333;
+    font-size: 2rem;
+    padding: 1rem 0;
+}
+
+.box a, .box p {
+    display: block;
+    color: #666;
+    font-size: 16px;
+    padding: 1rem 0;
+}
+
+.box a:hover {
+    color: #aa5377;
+    text-decoration: underline;
+}
+
+.box img {
+    margin-top: 1rem;
+    height: 1.7rem;
+    width: 16rem;
+}
+
+.credit {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding: 2.5rem 1.5rem 1.5rem;
+    font-size: 1.8rem;
+    color: #333;
+    border-top: 0.13rem solid rgb(211, 211, 211);
+}
+
+.credit span {
+    color: #aa5377;
+}
+
+@media screen and (max-width: 991px) {
+    footer {
+        padding: 2rem;
+    }
+}
