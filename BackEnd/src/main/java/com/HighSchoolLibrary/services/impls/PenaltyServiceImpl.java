@@ -1,0 +1,59 @@
+package com.HighSchoolLibrary.services.impls;
+
+
+import com.HighSchoolLibrary.dto.PageDTO;
+import com.HighSchoolLibrary.dto.PenaltyDTO;
+import com.HighSchoolLibrary.dto.SearchDTO;
+import com.HighSchoolLibrary.entities.Penalty;
+import com.HighSchoolLibrary.enums.SortDirection;
+import com.HighSchoolLibrary.mappers.PenaltyMapper;
+import com.HighSchoolLibrary.repositoriesMongo.PenaltyRepository;
+import com.HighSchoolLibrary.services.PenaltyService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+/*
+@author Микола
+@project High_school_library
+@class PenaltyServiceImpl
+@version 1.0.0
+@since 18.08.2022 - 16.35
+*/
+@Service
+public class PenaltyServiceImpl implements PenaltyService {
+
+    private final PenaltyMapper mapper;
+    private final MongoTemplate mongoTemplate;
+
+    public PenaltyServiceImpl(PenaltyMapper mapper, MongoTemplate mongoTemplate) {
+        this.mapper = mapper;
+        this.mongoTemplate = mongoTemplate;
+    }
+
+    @Override
+    public PageDTO<PenaltyDTO> getAll(SearchDTO search) {
+        Sort sort = Sort.by(search.getSortField());
+        if (search.getSortDirection() == SortDirection.DESC) {
+            sort = sort.descending();
+        }
+        Query queryPage = new Query();
+        PageDTO<PenaltyDTO> dto = new PageDTO<>();
+        queryPage.addCriteria(Criteria.where("id_penalty_kicker").is(Integer.parseInt(search.getSearch())));
+        dto.setTotalItem(mongoTemplate.count(queryPage,Penalty.class));
+        Pageable pageable = PageRequest.of(search.getPage(), search.getPageSize(), sort);
+        queryPage.with(pageable);
+        List<Penalty> penalties = mongoTemplate.find(queryPage, Penalty.class);
+        dto.setContent(penalties.stream().map(mapper::toDto).collect(Collectors.toList()));
+        dto.setPage(search.getPage());
+        dto.setPageSize(search.getPageSize());
+        return dto;
+    }
+}
