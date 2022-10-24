@@ -1,4 +1,4 @@
-create database HighSchoolLibrary;
+-- create database HighSchoolLibrary;
 
 DROP TABLE IF EXISTS  book, author,book_author;
 DROP TABLE IF EXISTS  teacher,student, users;
@@ -40,8 +40,8 @@ CREATE TABLE users
     name VARCHAR(128) NOT NULL,
     surname VARCHAR(128) NOT NULL,
     role userRole NOT NULL,
-    login VARCHAR(128) NOT NULL,
-    password VARCHAR(32) NOT NULL,
+    login VARCHAR(128) UNIQUE NOT NULL,
+    password VARCHAR(32) UNIQUE NOT NULL,
     type VARCHAR(32) NOT NULL,
     createdAt timestamp default now()
 );

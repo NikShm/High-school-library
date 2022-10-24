@@ -6,10 +6,12 @@ import { UsersComponent } from './users/users.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {HeaderComponent} from "./header/header.component";
 import {FooterComponent} from "./footer/footer.component";
-import {FormsModule} from "@angular/forms";
+import {FormsModule,ReactiveFormsModule } from "@angular/forms";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { UserPageComponent } from './user-page/user-page.component';
+import {UserService} from "./services/user.service";
+import {LoginComponent} from "./login/login.component";
 
 @NgModule({
   declarations: [
@@ -18,15 +20,17 @@ import { UserPageComponent } from './user-page/user-page.component';
     HeaderComponent,
     FooterComponent,
     UserPageComponent,
+    LoginComponent
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

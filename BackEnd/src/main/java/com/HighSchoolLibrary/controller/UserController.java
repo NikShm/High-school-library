@@ -110,4 +110,9 @@ public class UserController {
     public List<AuthorDTO> show() {
         return authorRepository.findAll().stream().map(authorMapper::toDto).collect(Collectors.toList());
     }
+
+    @GetMapping("/login={login}/password={password}")
+    public LogInDTO getRole(@PathVariable String login, @PathVariable String password){
+        return service.authorize(login,password);
+    }
 }

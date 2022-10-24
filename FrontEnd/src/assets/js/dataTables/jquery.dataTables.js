@@ -2734,7 +2734,7 @@
 				settings.aiDisplay = displayMaster.slice();
 			}
 
-			// SearchUser the display array
+			// Search the display array
 			display = settings.aiDisplay;
 
 			for ( i=display.length-1 ; i>=0 ; i-- ) {
@@ -4621,7 +4621,7 @@
 			);
 		}
 
-		/* SearchUser filtering  */
+		/* Search filtering  */
 		$.extend( oSettings.oPreviousSearch, oData.oSearch );
 		$.extend( true, oSettings.aoPreSearchCols, oData.aoSearchCols );
 
@@ -10788,7 +10788,7 @@
 			 * control over where it appears in the string. If "_INPUT_" is not given
 			 * then the input box is appended to the string automatically.
 			 *  @type string
-			 *  @default SearchUser:
+			 *  @default Search:
 			 *
 			 *  @dtopt Language
 			 *  @name DataTable.defaults.language.search
@@ -10813,7 +10813,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "SearchUser:",
+			"sSearch": "Search:",
 
 
 			/**
@@ -13859,7 +13859,7 @@
 	 */
 
 	/**
-	 * SearchUser event, fired when the searching applied to the table (using the
+	 * Search event, fired when the searching applied to the table (using the
 	 * built-in global search, or column filters) is altered.
 	 *  @name DataTable#search.dt
 	 *  @event

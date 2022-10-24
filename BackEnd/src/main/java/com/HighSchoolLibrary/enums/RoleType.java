@@ -10,5 +10,5 @@ package com.HighSchoolLibrary.enums;
 public enum RoleType {
     USER,
     ADMIN,
-    STUDENT
+    OPERATOR
 }

@@ -1,0 +1,43 @@
+<div id="login">
+<!--  <div class="center">-->
+<!--    <h1>Log In</h1>-->
+<!--    <form>-->
+<!--      <div class="inputbox">-->
+<!--        <input name="login" type="text"  required="required"> [(ngModel)]="login" (keydown.enter)="submit()"-->
+<!--        <span>Login</span>-->
+<!--      </div>-->
+<!--      <div class="inputbox">-->
+<!--        <input name="password" type="password"   required="required"> (keydown.enter)="submit()" [(ngModel)]="password"-->
+<!--        <span>Password</span>-->
+<!--      </div>-->
+<!--      <div class="inputbox">-->
+<!--        <input type="button"  value="Submit"> (click)="submit()"-->
+<!--      </div>-->
+<!--    </form>-->
+<!--  </div>-->
+  <div class="col-md-6 col-sm-6 col-xs-12" style="width: 30%">
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        Log In
+      </div>
+      <div class="panel-body">
+        <form role="form">
+
+          <div class="form-group">
+            <label>Enter Login</label>
+            <input [(ngModel)]="login" (keydown.enter)="submit()" [ngModelOptions]="{standalone: true}" class="form-control" required="required" type="text"/>
+            <p class="help-block">Help text here.</p>
+          </div>
+          <div class="form-group">
+            <label>Enter Password</label>
+            <input (keydown.enter)="submit()" [(ngModel)]="password" [ngModelOptions]="{standalone: true}" class="form-control" required="required" type="password"/>
+            <p class="help-block">Help text here.</p>
+          </div>
+
+          <button (click)="submit()" type="button" class="btn btn-danger" value="Submit">Log In</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

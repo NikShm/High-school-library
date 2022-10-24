@@ -1,4 +1,4 @@
-export class SearchUser {
+export class Search {
     constructor(search: any, sortField: string, sortDirection: string, page: any, pageSize: number) {
         this.search = search;
         this.sortField = sortField;

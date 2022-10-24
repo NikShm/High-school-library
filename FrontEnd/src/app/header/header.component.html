@@ -15,7 +15,7 @@
       </div>
 
       <div class="right-div">
-        <a href="#" class="btn btn-info pull-right">LOG ME OUT</a>
+        <a (click)="logOut()" class="btn btn-info pull-right">LOG ME OUT</a>
       </div>
     </div>
   </div>
@@ -36,9 +36,9 @@
                   <li role="presentation"><a role="menuitem" tabindex="-1" href="#">EXAMPLE LINK</a></li>
                 </ul>
               </li>
-              <li><a href="tab.html" > TABS & PANELS</a></li>
-              <li><a routerLink="" class="menu-top-active" >TABLES</a></li>
-              <li><a routerLink="users" >BLANK PAGE</a></li>
+              <li><a routerLink="/users" >Users</a></li>
+              <li><a routerLink="user/1" >TABLES</a></li>
+              <li><a routerLink="/user/{{id}}" >My Page</a></li>
 
             </ul>
           </div>

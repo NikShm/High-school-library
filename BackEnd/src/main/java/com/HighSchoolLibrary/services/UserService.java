@@ -6,6 +6,7 @@ package com.HighSchoolLibrary.services;/*
 @since 17.08.2022 - 22.30
 */
 
+import com.HighSchoolLibrary.dto.LogInDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.SearchDTO;
 import com.HighSchoolLibrary.dto.UserDTO;
@@ -26,4 +27,6 @@ public interface UserService {
     void delete(Integer id) throws IOException;
 
     Integer create(UserDTO dto);
+
+    LogInDTO authorize(String login, String password);
 }
