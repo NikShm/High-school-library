@@ -7,7 +7,6 @@ export class User {
   role: string;
   type: string;
   createdAt: string;
-  photoPath: string;
 
   constructor(user: User) {
     if (user.id != "-1") {
@@ -19,7 +18,6 @@ export class User {
       this.role = user.role;
       this.type = user.type;
       this.createdAt = user.createdAt;
-      this.photoPath = user.photoPath;
     }else {
       this.id = "";
       this.name = "";
@@ -29,7 +27,6 @@ export class User {
       this.role = ""
       this.type = ""
       this.createdAt = ""
-      this.photoPath = ""
       }
   }
 }

@@ -1,6 +1,7 @@
 package com.HighSchoolLibrary.services.impls;
 
 
+import com.HighSchoolLibrary.dto.LogInDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.SearchDTO;
 import com.HighSchoolLibrary.dto.UserDTO;
@@ -98,5 +99,12 @@ public class UserServiceImpl implements UserService {
     public Integer create(UserDTO dto) {
         User updatedUser = mapper.toEntity(dto);
         return repository.save(updatedUser).getId();
+    }
+
+    @Override
+    public LogInDTO authorize(String login, String password) {
+        User user = repository.findByLoginAndPassword(login,password);
+        System.out.println("Authorize");
+        return user == null?null:mapper.toLogInDTO(user) ;
     }
 }

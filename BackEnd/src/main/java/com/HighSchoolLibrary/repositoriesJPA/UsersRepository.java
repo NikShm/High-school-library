@@ -14,4 +14,5 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  **/
 @EnableJpaRepositories("com.HighSchoolLibrary.repositoriesJPA")
 public interface UsersRepository extends JpaRepository<User, Integer>, JpaSpecificationExecutor<User>{
+    User findByLoginAndPassword(String login, String password);
 }

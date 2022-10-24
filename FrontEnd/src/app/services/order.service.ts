@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {SearchUser} from "../models/search-user";
+import {Search} from "../models/search";
 import {Observable} from "rxjs";
-import {Page} from "../models/page";
+import {Page} from "../models/sheet";
 import {map} from "rxjs/operators";
 import {Order} from "../models/order";
 import {Penalty} from "../models/penalty";
@@ -15,7 +15,7 @@ export class OrderService {
   constructor(private http: HttpClient) {
   }
 
-  getOrder(searchParameter: SearchUser): Observable<Page> {
+  getOrder(searchParameter: Search): Observable<Page> {
     return this.http.post('http://localhost:8080/api/order/search', searchParameter).pipe(map((data: any) => {
       data.content.forEach(function(order:Order,index:number){
         data.content[index] = new Order(order)

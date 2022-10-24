@@ -1,5 +1,6 @@
 package com.HighSchoolLibrary.mappers;
 
+import com.HighSchoolLibrary.dto.LogInDTO;
 import com.HighSchoolLibrary.dto.StudentDTO;
 import com.HighSchoolLibrary.dto.TeacherDTO;
 import com.HighSchoolLibrary.dto.UserDTO;
@@ -65,5 +66,12 @@ public class UserMapper {
         teacher.setDegree(dto.getDegree());
         teacher.setRank(dto.getRank());
         return teacher;
+    }
+
+    public LogInDTO toLogInDTO(User user){
+        LogInDTO logInDTO = new LogInDTO();
+        logInDTO.setRole(user.getRole());
+        logInDTO.setId(user.getId());
+        return logInDTO;
     }
 }
