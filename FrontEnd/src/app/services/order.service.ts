@@ -6,6 +6,7 @@ import {Page} from "../models/sheet";
 import {map} from "rxjs/operators";
 import {Order} from "../models/order";
 import {Penalty} from "../models/penalty";
+import {GlobalConstants} from "../global-constants";
 
 @Injectable({
   providedIn: 'root'
@@ -16,11 +17,11 @@ export class OrderService {
   }
 
   getOrder(searchParameter: Search): Observable<Page> {
-    return this.http.post('http://localhost:8080/api/order/search', searchParameter).pipe(map((data: any) => {
-      data.content.forEach(function(order:Order,index:number){
-        data.content[index] = new Order(order)
+    return this.http.post(GlobalConstants.apiURL +'/api/order/search', searchParameter).pipe(map((data: any) => {
+      data.content.map((order:Order) => {
+        return new Order(order)
       })
-      return new Page(data.content, data.pageCount, data.totalItem, data.page, data.pageSize);
+      return new Page(data.content, data.totalItem);
     }));
   }
 }

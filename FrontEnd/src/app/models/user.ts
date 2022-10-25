@@ -1,4 +1,4 @@
-export class User {
+export abstract class User {
   id: string;
   name: string;
   surname: string;
@@ -8,7 +8,7 @@ export class User {
   type: string;
   createdAt: string;
 
-  constructor(user: User) {
+  protected constructor(user: User) {
     if (user.id != "-1") {
       this.id = user.id;
       this.name = user.name;

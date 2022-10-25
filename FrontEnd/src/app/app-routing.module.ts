@@ -4,12 +4,15 @@ import {UsersComponent} from "./users/users.component";
 import {UserPageComponent} from "./user-page/user-page.component";
 import {LoginComponent} from "./login/login.component";
 import {FormsModule} from "@angular/forms";
+import {BooksComponent} from "./books/books.component";
 
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
   {path: 'users', component: UsersComponent},
+  {path: 'books', component: BooksComponent},
   {path: 'user/:id', component: UserPageComponent},
+  {path: 'author/:id', component: BooksComponent},
   { path: '**', redirectTo: '/404' }
 ];
 

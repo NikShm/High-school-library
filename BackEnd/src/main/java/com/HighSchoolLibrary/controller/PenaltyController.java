@@ -3,7 +3,7 @@ package com.HighSchoolLibrary.controller;
 
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
-import com.HighSchoolLibrary.dto.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.services.impls.PenaltyServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

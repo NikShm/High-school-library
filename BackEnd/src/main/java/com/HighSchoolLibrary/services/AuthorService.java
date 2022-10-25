@@ -6,5 +6,15 @@ package com.HighSchoolLibrary.services;/*
 @since 05.09.2022 - 22.05
 */
 
+import com.HighSchoolLibrary.dto.AuthorDTO;
+import com.HighSchoolLibrary.dto.PageDTO;
+import com.HighSchoolLibrary.dto.search.SearchDTO;
+
+import java.util.Optional;
+
 public interface AuthorService {
+
+    Optional<AuthorDTO> getOneAuthor(Integer id);
+
+    PageDTO<AuthorDTO> getPage(SearchDTO searchDTO);
 }

@@ -3,10 +3,9 @@ package com.HighSchoolLibrary.services.impls;
 
 import com.HighSchoolLibrary.dto.LogInDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
-import com.HighSchoolLibrary.dto.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.UserDTO;
 import com.HighSchoolLibrary.entities.User;
-import com.HighSchoolLibrary.enums.SortDirection;
 import com.HighSchoolLibrary.exceptions.DatabaseFetchException;
 import com.HighSchoolLibrary.mappers.UserMapper;
 import com.HighSchoolLibrary.repositoriesJPA.UsersRepository;
@@ -15,7 +14,6 @@ import com.HighSchoolLibrary.utils.QueryHelper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -52,27 +50,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageDTO<UserDTO> getPage(SearchDTO search) {
-        Sort sort = Sort.by(search.getSortField());
-        if (search.getSortDirection() == SortDirection.DESC) {
-            sort = sort.descending();
-        }
-        Pageable pageable = PageRequest.of(search.getPage(), search.getPageSize(), sort);
+        Pageable pageable = PageRequest.of(search.getPage(), search.getPageSize(), QueryHelper.getSort(search.getSortDirection(),
+                search.getSortField()));
         Page<User> all = repository.findAll((root, query, criteriaBuilder) -> getPredicate(search, criteriaBuilder, root), pageable);
         PageDTO<UserDTO> dto = new PageDTO<>();
         dto.setContent(all.stream().map(mapper::toDto).collect(Collectors.toList()));
-        dto.setPageCount(all.getTotalPages());
-        dto.setPage(all.getNumber());
-        dto.setPageSize(all.getNumberOfElements());
         dto.setTotalItem(all.getTotalElements());
         return dto;
     }
 
-    private Predicate getPredicate(SearchDTO search, CriteriaBuilder criteriaBuilder, Root<User> product) {
+    private Predicate getPredicate(SearchDTO search, CriteriaBuilder criteriaBuilder, Root<User> user) {
         List<Predicate> predicates = new ArrayList<>();
         String value = search.getSearch();
         if (value != null) {
-            predicates.add(criteriaBuilder.or(QueryHelper.ilike(product.get("surname"), criteriaBuilder, value),
-                    QueryHelper.ilike(product.get("name"), criteriaBuilder, value)));
+            predicates.add(criteriaBuilder.or(QueryHelper.ilike(user.get("surname"), criteriaBuilder, value),
+                    QueryHelper.ilike(user.get("name"), criteriaBuilder, value)));
         }
         return predicates.size() == 1 ? predicates.get(0) : criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }
@@ -104,7 +96,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public LogInDTO authorize(String login, String password) {
         User user = repository.findByLoginAndPassword(login,password);
-        System.out.println("Authorize");
         return user == null?null:mapper.toLogInDTO(user) ;
     }
 }

@@ -6,14 +6,11 @@ package com.HighSchoolLibrary.services;/*
 @since 05.09.2022 - 22.05
 */
 
+import com.HighSchoolLibrary.dto.BookDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
-import com.HighSchoolLibrary.dto.SearchDTO;
-import com.HighSchoolLibrary.dto.UserDTO;
-
-import java.util.Optional;
+import com.HighSchoolLibrary.dto.search.SearchAuthorsBookDTO;
+import com.HighSchoolLibrary.dto.search.SearchDTO;
 
 public interface BookService {
-    PageDTO<UserDTO> getPage(SearchDTO search);
-
-    Optional<UserDTO> getOneUser(Integer id);
+    PageDTO<BookDTO> getPage(SearchAuthorsBookDTO search);
 }

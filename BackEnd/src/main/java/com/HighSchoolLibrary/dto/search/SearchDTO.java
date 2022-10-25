@@ -1,4 +1,4 @@
-package com.HighSchoolLibrary.dto;
+package com.HighSchoolLibrary.dto.search;
 
 import com.HighSchoolLibrary.entities.Student;
 import com.HighSchoolLibrary.entities.Teacher;
@@ -23,10 +23,20 @@ public class SearchDTO {
     @ApiModelProperty(value = "The type of sort.", readOnly = true, dataType = "SortDirection")
     private SortDirection sortDirection;
     @ApiModelProperty(value = "Page number to be returned.", readOnly = true, dataType = "String")
-    private int page;
+    private Integer page;
     @ApiModelProperty(value = "The size of the returned page.", readOnly = true, dataType = "String")
-    private int pageSize;
+    private Integer pageSize;
 
+    public SearchDTO() {
+    }
+
+    public SearchDTO(String search, String sortField, SortDirection sortDirection, Integer page, Integer pageSize) {
+        this.search = search;
+        this.sortField = sortField;
+        this.sortDirection = sortDirection;
+        this.page = page;
+        this.pageSize = pageSize;
+    }
 
     public String getSearch() {
         return search;
@@ -52,19 +62,19 @@ public class SearchDTO {
         this.sortDirection = sortDirection;
     }
 
-    public int getPage() {
+    public Integer getPage() {
         return page;
     }
 
-    public void setPage(int page) {
+    public void setPage(Integer page) {
         this.page = page;
     }
 
-    public int getPageSize() {
+    public Integer getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(int pageSize) {
+    public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
     }
 

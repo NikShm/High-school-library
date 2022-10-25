@@ -3,11 +3,10 @@ package com.HighSchoolLibrary.services.impls;
 
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
-import com.HighSchoolLibrary.dto.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.entities.Penalty;
 import com.HighSchoolLibrary.enums.SortDirection;
 import com.HighSchoolLibrary.mappers.PenaltyMapper;
-import com.HighSchoolLibrary.repositoriesMongo.PenaltyRepository;
 import com.HighSchoolLibrary.services.PenaltyService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -52,8 +51,6 @@ public class PenaltyServiceImpl implements PenaltyService {
         queryPage.with(pageable);
         List<Penalty> penalties = mongoTemplate.find(queryPage, Penalty.class);
         dto.setContent(penalties.stream().map(mapper::toDto).collect(Collectors.toList()));
-        dto.setPage(search.getPage());
-        dto.setPageSize(search.getPageSize());
         return dto;
     }
 }

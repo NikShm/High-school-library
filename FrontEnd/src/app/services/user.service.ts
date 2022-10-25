@@ -10,6 +10,7 @@ import {Teacher} from "../models/teacher";
 import {GlobalConstants} from "../global-constants";
 import {LogIn} from "../models/log-in";
 import {Router} from "@angular/router";
+import {Order} from "../models/order";
 
 @Injectable({
   providedIn: 'root'
@@ -21,25 +22,31 @@ export class UserService {
   }
 
   getUsers(searchParameter: Search): Observable<Page> {
-    return this.http.post('http://localhost:8080/api/users/search', searchParameter).pipe(map((data: any) => {
-      return new Page(data.content, data.pageCount, data.totalItem, data.page, data.pageSize);
+    return this.http.post(GlobalConstants.apiURL +'/api/users/search', searchParameter).pipe(map((data: any) => {
+      data.content.map((user:User) => {
+        return UserService.setUser(user);
+      })
+      return new Page(data.content, data.totalItem);
     }));
   }
 
   getOneUser(id: any): Observable<User> {
-    return this.http.get<User>('http://localhost:8080/api/users/id=' + id).pipe(map((data: any) => {
-      switch (data.type) {
-        case "Student": {
-          return new Student(data);
-          break;
-        }
-        case "Teacher": {
-          return new Teacher(data);
-          break;
-        }
-      }
-      return new User(data);
+    return this.http.get<User>(GlobalConstants.apiURL +'/api/users/id=' + id).pipe(map((data: any) => {
+      return UserService.setUser(data);
     }));
+  }
+
+  static setUser(user:any):any{
+    switch (user.type) {
+      case "Student": {
+        return new Student(user);
+        break;
+      }
+      case "Teacher": {
+        return new Teacher(user);
+        break;
+      }
+    }
   }
 
   authorize(login: string, password:string): Observable<LogIn>{

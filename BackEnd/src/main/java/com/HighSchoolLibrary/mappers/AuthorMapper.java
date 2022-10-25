@@ -22,13 +22,6 @@ import java.util.List;
 @Component
 public class AuthorMapper {
     public AuthorDTO toDto(Author author) {
-        AuthorDTO dto = new AuthorDTO(author);
-        List<BookDTO> bookList = new ArrayList<>();
-        for (Book book : author.getBooks()){
-            BookDTO bookDTO = new BookDTO(book);
-            bookList.add(bookDTO);
-        }
-        dto.setBooks(bookList);
-        return dto;
+        return new AuthorDTO(author);
     }
 }

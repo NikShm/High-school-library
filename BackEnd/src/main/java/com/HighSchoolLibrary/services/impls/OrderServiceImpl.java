@@ -3,8 +3,7 @@ package com.HighSchoolLibrary.services.impls;
 
 import com.HighSchoolLibrary.dto.OrderDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
-import com.HighSchoolLibrary.dto.PenaltyDTO;
-import com.HighSchoolLibrary.dto.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.entities.Order;
 import com.HighSchoolLibrary.enums.SortDirection;
 import com.HighSchoolLibrary.mappers.AuthorMapper;
@@ -54,8 +53,6 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orders = mongoTemplate.find(queryPage, Order.class);
         dto.setContent(orders.stream().map(mapper::toDto).collect(Collectors.toList()));
         System.out.println(dto.getContent());
-        dto.setPage(search.getPage());
-        dto.setPageSize(search.getPageSize());
         return dto;
     }
 }

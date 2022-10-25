@@ -1,6 +1,8 @@
 package com.HighSchoolLibrary.repositoriesJPA;
 import com.HighSchoolLibrary.entities.Book;
+import com.HighSchoolLibrary.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +18,6 @@ import java.util.Optional;
 */
 @Repository
 @EnableJpaRepositories("com.HighSchoolLibrary.repositoriesJPA")
-public interface BookRepository extends JpaRepository<Book, Integer> {
+public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecificationExecutor<Book> {
     List<Book> findAllById(Integer id);
 }

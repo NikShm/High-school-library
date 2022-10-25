@@ -13,8 +13,8 @@ import {Location} from "@angular/common";
 })
 export class UsersComponent implements OnInit {
 
-  page:Page = new Page([],0,1,0,2);
-  searchParameter = new Search('',"id","ASC",null,2)
+  page:Page = new Page([],0);
+  searchParameter = new Search('',"id","ASC",0,2)
 
 
   constructor(private userService:UserService,private location: Location) { }
