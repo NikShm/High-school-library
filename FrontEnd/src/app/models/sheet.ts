@@ -5,17 +5,18 @@ import {Student} from "./student";
 import {Teacher} from "./teacher";
 
 export class Page {
-  constructor(content: any, pageCount: number, totalItem: number, page: number, pageSize: number) {
+  constructor(content: any, totalItem: number) {
     this.content = content;
-    this.pageCount = pageCount;
     this.totalItem = totalItem;
-    this.page = page;
-    this.pageSize = pageSize;
   }
-
   content:any;
-  pageCount : number;
   totalItem : number;
-  page : number;
-  pageSize : number;
+}
+
+export class PagesForUser extends Page{
+  constructor(content: any, totalItem: number, page:number) {
+    super(content,totalItem)
+    this.page = page
+  }
+  page: number;
 }

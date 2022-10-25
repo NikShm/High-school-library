@@ -1,30 +1,21 @@
 package com.HighSchoolLibrary.services.impls;
 
 
+import com.HighSchoolLibrary.dto.BookDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
-import com.HighSchoolLibrary.dto.SearchDTO;
-import com.HighSchoolLibrary.dto.UserDTO;
+import com.HighSchoolLibrary.dto.search.SearchAuthorsBookDTO;
 import com.HighSchoolLibrary.entities.Book;
-import com.HighSchoolLibrary.entities.User;
-import com.HighSchoolLibrary.enums.SortDirection;
 import com.HighSchoolLibrary.mappers.BookMapper;
-import com.HighSchoolLibrary.mappers.UserMapper;
-import com.HighSchoolLibrary.repositoriesJPA.BookRepository;
 import com.HighSchoolLibrary.services.BookService;
-import com.HighSchoolLibrary.utils.QueryHelper;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.EntityManager;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /*
 @author Микола
@@ -35,21 +26,64 @@ import java.util.stream.Collectors;
 */
 @Service
 public class BookServiceImpl implements BookService {
-    private final BookRepository repository;
+    private final EntityManager entityManager;
     private final BookMapper mapper;
 
-    public BookServiceImpl(BookRepository repository, BookMapper mapper) {
-        this.repository = repository;
+    public BookServiceImpl(EntityManager entityManager, BookMapper mapper) {
+        this.entityManager = entityManager;
         this.mapper = mapper;
     }
 
     @Override
-    public PageDTO<UserDTO> getPage(SearchDTO search) {
-        return null;
+    public PageDTO<BookDTO> getPage(SearchAuthorsBookDTO search) {
+        List<BookDTO> postDTOS = new ArrayList<>();
+        for (Object entity : entityManager.createNativeQuery(getPageQuery(search), Book.class).getResultList()) {
+            postDTOS.add(mapper.toDto((Book) entity));
+        }
+        Page<BookDTO> page = new PageImpl<>(postDTOS);
+        PageDTO<BookDTO> pageDTO = new PageDTO<>();
+        pageDTO.setContent(page.getContent());
+        pageDTO.setTotalItem(((BigInteger) entityManager.createNativeQuery(getCountQuery(search.getAuthorId())).getSingleResult()).longValue());
+        return pageDTO;
     }
 
-    @Override
-    public Optional<UserDTO> getOneUser(Integer id) {
-        return Optional.empty();
+    private StringBuilder getQuery() {
+        return new StringBuilder();
+    }
+
+    private String getPageQuery(SearchAuthorsBookDTO search) {
+        StringBuilder query = getQuery();
+        if (search.getPage() != null && search.getPageSize() != null && search.getSearch() != null) {
+            query.append("SELECT * FROM book");
+            if (search.getAuthorId() != null) {
+                query.append(" Left JOIN book_author ba on book.id = ba.bookid " +
+                        "Left JOIN author a on ba.authorid = a.id");
+            }
+            query.append(" where ");
+            if (!Objects.equals(search.getSearch(), "")) {
+                query.append("book.ts_description @@ phraseto_tsquery('english', '").append(search.getSearch()).append("')")
+                        .append(" or ");
+            }
+            query.append("book.name like '%").append(search.getSearch()).append("%'");
+            if (search.getAuthorId() != null) {
+                query.append(" and a.id = ").append(search.getAuthorId());
+            }
+            if (search.getSortDirection() != null && search.getSortField() != null) {
+                query.append(" ORDER BY book.").append(search.getSortField()).append(" ").append(search.getSortDirection());
+            }
+            query.append(" limit ").append(search.getPageSize()).append(" offset ").append(search.getPage() * search.getPageSize());
+        }
+        return query.toString();
+    }
+
+    private String getCountQuery(Integer authorId) {
+        StringBuilder query = getQuery();
+        query.append("SELECT count(*) FROM book");
+        if (authorId != null) {
+            query.append(" Left JOIN book_author ba on book.id = ba.bookid " +
+                    "Left JOIN author a on ba.authorid = a.id");
+            query.append(" where a.id = ").append(authorId);
+        }
+        return query.toString();
     }
 }

@@ -3,7 +3,8 @@
   <div class="container">
     <div class="row pad-botm">
       <div class="col-md-12">
-        <h4 class="header-line">TABLE EXAMPLES</h4>
+        <h4 class="header-line" *ngIf="author == null">TABLE EXAMPLES</h4>
+        <h4 class="header-line" *ngIf="author != null">{{author.name}}</h4>
 
       </div>
 
@@ -41,19 +42,24 @@
                 <thead>
                 <tr>
                   <th (click)="setSortField('id')">Id</th>
-                  <th (click)="setSortField('name')">Name</th>
-                  <th>Surname</th>
-                  <th>Role</th>
-                  <th>Type</th>
+                  <th (click)="setSortField('name')">Title</th>
+                  <th>Author</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Category</th>
+                  <th>Count</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="odd gradeX" *ngFor="let user of page.content" routerLink="/user/{{user.id}}">
-                  <td >{{user.id}}</td>
-                  <td>{{user.name}}</td>
-                  <td>{{user.surname}}</td>
-                  <td class="center">{{user.role}}</td>
-                  <td class="center">{{user.type}}</td>
+                <tr class="odd gradeX" *ngFor="let book of page.content">
+                  <td >{{book.id}}</td>
+                  <td>{{book.name}}</td>
+                  <td> <div *ngFor="let author of book.authors" routerLink='/author/{{author.id}}'>{{author.name}}</div></td>
+                  <td class="center" style="width: 40%">{{book.description}}</td>
+                  <td class="center">{{book.price}}</td>
+                  <td class="center">{{book.category}}</td>
+                  <td class="center">{{book.count}}</td>
+                  <td class="center"><button type="submit" class="btn btn-danger">Order</button></td>
                 </tr>
                 </tbody>
               </table>

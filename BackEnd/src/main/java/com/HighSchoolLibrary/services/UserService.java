@@ -8,7 +8,7 @@ package com.HighSchoolLibrary.services;/*
 
 import com.HighSchoolLibrary.dto.LogInDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
-import com.HighSchoolLibrary.dto.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.UserDTO;
 
 import java.io.IOException;

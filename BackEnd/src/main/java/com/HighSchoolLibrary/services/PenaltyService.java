@@ -8,9 +8,7 @@ package com.HighSchoolLibrary.services;/*
 
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
-import com.HighSchoolLibrary.dto.SearchDTO;
-
-import java.util.List;
+import com.HighSchoolLibrary.dto.search.SearchDTO;
 
 public interface PenaltyService {
     PageDTO<PenaltyDTO> getAll(SearchDTO search);

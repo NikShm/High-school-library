@@ -16,7 +16,24 @@ values ('2', 'FTCH', '343', 'A1'),
        ('4', 'FTCH', '343', 'A1'),
        ('5', 'FTCH', '343', 'A1'),
        ('6', 'FTCH', '343', 'A1');
-insert into author(name, surname)
-values ('Y', 'X');
+insert into author(name)
+values
+       ('Hare'),
+       ('Mare'),
+       ('Lire');
 insert into book(name, description, price, category, count)
-values ('Y', 'X', 200, 'Науково-Популярна', 2);
+values ('Y', 'A 1.5 mile wide swath of winds gusting to around 95 mph created **tornado-like** damage along Kentucky Highway 259 in Edmons
+on County. The winds, extending 3/4 of a mile north and south of Bee Spring, destroyed or heavily damaged several small outbuildings, tore
+part of the roof off of one home, uprooted and snapped the trunks of numerous trees, and snapped around a dozen power poles', 200, 'Науково-Популярна', 2);
+
+INSERT INTO book_author(bookid, authorid)
+VALUES
+    (1, 2),
+    (2, 1),
+    (3, 3);
+
+SELECT * FROM book Left
+    JOIN book_author ba on book.id = ba.bookid
+                        Left JOIN author a on ba.authorid = a.id where a.id = 1 ORDER BY book.id  limit 4 offset 0*4;
+
+SELECT * FROM book Left JOIN book_author ba on book.id = ba.bookid Left JOIN author a on ba.authorid = a.id where a.id = 2

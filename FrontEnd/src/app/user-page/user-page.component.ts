@@ -3,9 +3,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from "../services/user.service";
 import {Search} from "../models/search";
 import {PenaltyService} from "../services/penalty.service";
-import {Page} from "../models/sheet";
+import {Page, PagesForUser} from "../models/sheet";
 import {OrderService} from "../services/order.service";
 import {Location} from '@angular/common';
+import { User} from "../models/user";
 
 @Component({
   selector: 'app-user-page',
@@ -16,8 +17,8 @@ export class UserPageComponent implements OnInit {
 
   logIn: any;
   user!: any
-  penalty: Page = new Page(null, 0, 0, 1, 2)
-  orders: Page = new Page(null, 0, 0, 1, 2)
+  penalty: PagesForUser = new PagesForUser(null, 0, 1)
+  orders: PagesForUser = new PagesForUser(null, 0, 1)
   searchParameter = new Search("", "id", "ASC", 1, 2)
 
   constructor(private route: ActivatedRoute, private userService: UserService, private penaltyService: PenaltyService,
@@ -37,7 +38,7 @@ export class UserPageComponent implements OnInit {
         }
       }
       this.userService.getOneUser(params.get('id')).subscribe((data: any) => {
-        this.user = data
+        this.user = UserService.setUser(data)
         this.setPage("penalty")
         this.setPage("order")
       })
@@ -53,15 +54,15 @@ export class UserPageComponent implements OnInit {
       case "order":
         this.searchParameter.page = this.orders.page - 1;
         this.orderService.getOrder(this.searchParameter).subscribe((data: any) => {
-          this.orders = data;
-          this.orders.page += 1;
+          this.orders.content = data.content;
+          this.orders.totalItem = data.totalItem;
         })
         break;
       case "penalty":
         this.searchParameter.page = this.penalty.page - 1;
         this.penaltyService.getPenalty(this.searchParameter).subscribe((data: Page) => {
-          this.penalty = data;
-          this.penalty.page += 1
+          this.penalty.content = data.content;
+          this.penalty.totalItem = data.totalItem;
         })
         break;
     }

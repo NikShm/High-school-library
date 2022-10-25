@@ -12,6 +12,7 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from "@angular/common/http";
 import { UserPageComponent } from './user-page/user-page.component';
 import {UserService} from "./services/user.service";
 import {LoginComponent} from "./login/login.component";
+import {BooksComponent} from "./books/books.component";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {LoginComponent} from "./login/login.component";
     HeaderComponent,
     FooterComponent,
     UserPageComponent,
-    LoginComponent
+    LoginComponent,
+    BooksComponent,
   ],
   imports: [
     HttpClientModule,

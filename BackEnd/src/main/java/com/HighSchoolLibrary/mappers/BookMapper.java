@@ -27,7 +27,6 @@ public class BookMapper {
             AuthorDTO authorDTO = new AuthorDTO(author);
             authorList.add(authorDTO);
         }
-        System.out.println(book.getAuthorList());
         dto.setAuthorList(authorList);
         return dto;
     }

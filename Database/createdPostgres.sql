@@ -13,7 +13,6 @@ CREATE TABLE author
 (
     id SERIAL PRIMARY KEY,
     name VARCHAR(128) NOT NULL,
-    surname VARCHAR(32) NOT NULL,
     createdAt timestamp default now()
 );
 
@@ -21,11 +20,12 @@ CREATE TABLE book
 (
     id SERIAL PRIMARY KEY,
     name VARCHAR(128) NOT NULL,
-    description TEXT,
+    description TEXT NOT NULL,
     price NUMERIC NOT NULL CHECK(price>0),
     category category NOT NULL,
     count NUMERIC NOT NULL CHECK(count>=0),
-    createdAt timestamp default now()
+    createdAt timestamp default now(),
+    ts_description tsvector GENERATED ALWAYS AS (to_tsvector('english', description)) STORED
 );
 
 CREATE TABLE book_author

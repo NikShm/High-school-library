@@ -1,6 +1,8 @@
 package com.HighSchoolLibrary.repositoriesJPA;
 import com.HighSchoolLibrary.entities.Author;
+import com.HighSchoolLibrary.entities.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 /*
@@ -12,5 +14,5 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 @EnableJpaRepositories("com.HighSchoolLibrary.repositoriesJPA")
-public interface AuthorRepository extends JpaRepository<Author, Integer> {
+public interface AuthorRepository extends JpaRepository<Author, Integer>, JpaSpecificationExecutor<Author> {
 }

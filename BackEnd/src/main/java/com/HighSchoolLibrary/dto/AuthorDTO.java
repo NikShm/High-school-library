@@ -20,9 +20,7 @@ import java.util.List;
 public class AuthorDTO {
     private Integer id;
     private String name;
-    private String surname;
     private LocalDateTime createdAt;
-    private List<BookDTO> books;
 
     public AuthorDTO() {
     }
@@ -30,7 +28,6 @@ public class AuthorDTO {
     public AuthorDTO(Author author) {
         this.id = author.getId();
         this.name = author.getName();
-        this.surname = author.getSurname();
         this.createdAt = author.getCreatedAt();
     }
 
@@ -50,14 +47,6 @@ public class AuthorDTO {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
@@ -66,22 +55,12 @@ public class AuthorDTO {
         this.createdAt = createdAt;
     }
 
-    public List<BookDTO> getBooks() {
-        return books;
-    }
-
-    public void setBooks(List<BookDTO> books) {
-        this.books = books;
-    }
-
     @Override
     public String toString() {
         return "AuthorDTO{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
                 ", createdAt=" + createdAt +
-                ", books=" + books +
                 '}';
     }
 }

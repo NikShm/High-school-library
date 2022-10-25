@@ -10,9 +10,8 @@ export class Book {
     this.category = book.category
     this.count = book.count
     this.createdAt = book.createdAt
-    this.authors = book.authorList
-    this.authors.forEach(function (author: Author, index: number) {
-      book.authorList[index] = new Author(author)
+    this.authors = book.authorList == null?null:book.authorList.map((author: Author) => {
+     return new Author(author)
     })
   }
 

@@ -2,21 +2,14 @@ package com.HighSchoolLibrary.controller;
 
 
 import com.HighSchoolLibrary.dto.*;
-import com.HighSchoolLibrary.entities.Student;
-import com.HighSchoolLibrary.entities.Teacher;
+import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.entities.User;
 import com.HighSchoolLibrary.mappers.AuthorMapper;
-import com.HighSchoolLibrary.mappers.BookMapper;
 import com.HighSchoolLibrary.repositoriesJPA.AuthorRepository;
-import com.HighSchoolLibrary.repositoriesJPA.BookRepository;
 import com.HighSchoolLibrary.services.impls.UserServiceImpl;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
