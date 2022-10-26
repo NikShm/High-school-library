@@ -24,7 +24,7 @@ export class AuthorService {
 
   getAuthors(searchParameter: Search): Observable<Page> {
     return this.http.post(GlobalConstants.apiURL +'/api/authors/search', searchParameter).pipe(map((data: any) => {
-      data.content.map((author:Author)=>{
+      data.content = data.content.map((author:Author)=>{
         return new Author(author);
       })
       return new Page(data.content, data.totalItem);

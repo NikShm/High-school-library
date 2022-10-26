@@ -1,8 +1,5 @@
 package com.HighSchoolLibrary.dto.search;
 
-import com.HighSchoolLibrary.entities.Student;
-import com.HighSchoolLibrary.entities.Teacher;
-import com.HighSchoolLibrary.entities.User;
 import com.HighSchoolLibrary.enums.SortDirection;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -15,9 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
 @since 13.07.2022 - 19.34
 */
 @ApiModel(description = "Page creation options class", value = "Search")
-public class SearchDTO {
-    @ApiModelProperty(value = "The line in which the user is searched, in the name and surname fields.", readOnly = true, dataType = "String")
-    private String search;
+public class SearchDTO<T> {
     @ApiModelProperty(value = "The field by which sorting is performed.", readOnly = true, dataType = "String")
     private String sortField;
     @ApiModelProperty(value = "The type of sort.", readOnly = true, dataType = "SortDirection")
@@ -26,25 +21,7 @@ public class SearchDTO {
     private Integer page;
     @ApiModelProperty(value = "The size of the returned page.", readOnly = true, dataType = "String")
     private Integer pageSize;
-
-    public SearchDTO() {
-    }
-
-    public SearchDTO(String search, String sortField, SortDirection sortDirection, Integer page, Integer pageSize) {
-        this.search = search;
-        this.sortField = sortField;
-        this.sortDirection = sortDirection;
-        this.page = page;
-        this.pageSize = pageSize;
-    }
-
-    public String getSearch() {
-        return search;
-    }
-
-    public void setSearch(String search) {
-        this.search = search;
-    }
+    private T searchPattern;
 
     public String getSortField() {
         return sortField;
@@ -78,14 +55,22 @@ public class SearchDTO {
         this.pageSize = pageSize;
     }
 
+    public T getSearchPattern() {
+        return searchPattern;
+    }
+
+    public void setSearchPattern(T searchPattern) {
+        this.searchPattern = searchPattern;
+    }
+
     @Override
     public String toString() {
         return "SearchDTO{" +
-                "search='" + search + '\'' +
-                ", sortField='" + sortField + '\'' +
+                "sortField='" + sortField + '\'' +
                 ", sortDirection=" + sortDirection +
                 ", page=" + page +
                 ", pageSize=" + pageSize +
+                ", searchPattern=" + searchPattern +
                 '}';
     }
 }

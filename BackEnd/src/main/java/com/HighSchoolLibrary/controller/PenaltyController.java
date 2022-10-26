@@ -4,6 +4,7 @@ package com.HighSchoolLibrary.controller;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.services.impls.PenaltyServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class PenaltyController {
     }
 
     @PostMapping("/search")
-    public PageDTO<PenaltyDTO> getAll(@RequestBody SearchDTO search) {
+    public PageDTO<PenaltyDTO> getAll(@RequestBody SearchDTO<SearchPattern> search) {
         LOGGER.info("search(search={})", search);
         return penaltyService.getAll(search);
     }

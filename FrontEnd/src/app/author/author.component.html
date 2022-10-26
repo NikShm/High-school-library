@@ -3,7 +3,9 @@
   <div class="container">
     <div class="row pad-botm">
       <div class="col-md-12">
-        <h4 class="header-line" *ngIf="author == null">Books</h4>
+        <h4 class="header-line" *ngIf="author == null">TABLE EXAMPLES</h4>
+        <h4 class="header-line" *ngIf="author != null">{{author.name}}</h4>
+
       </div>
 
     </div>

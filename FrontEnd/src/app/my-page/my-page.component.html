@@ -1,0 +1,171 @@
+<app-header></app-header>
+<div class="content-wrapper">
+  <div class="container">
+    <div class="row pad-botm">
+      <div class="col-md-12">
+        <h4 class="header-line">{{user.name}} {{user.surname}}</h4>
+
+      </div>
+
+    </div>
+    <div class="row" >
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            INFO
+          </div>
+          <div class="panel-body">
+            <form role="form">
+
+              <div class="form-group">
+                <label>Role</label>
+                <input class="form-control" type="text" [value]="user.role" [disabled]="true"/>
+              </div>
+              <div class="form-group">
+                <label>Type</label>
+                <input class="form-control" type="text" [value]="user.type" [disabled]="true"/>
+              </div>
+              <div class="form-group">
+                <label>Created at</label>
+                <input class="form-control" type="text" [value]="user.createdAt" [disabled]="true"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6 col-xs-12" *ngIf="user.type == 'Student'">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            {{user.type}}
+          </div>
+          <div class="panel-body">
+            <form role="form">
+
+              <div class="form-group">
+                <label>Faculty</label>
+                <input class="form-control" type="text" [value]="user.faculty" [disabled]="true"/>
+              </div>
+              <div class="form-group">
+                <label>Group</label>
+                <input class="form-control" type="text" [value]="user.group" [disabled]="true"/>
+              </div>
+              <div class="form-group">
+                <label>Subgroup</label>
+                <input class="form-control" type="text" [value]="user.subgroup" [disabled]="true"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6 col-xs-12" *ngIf="user.type == 'Teacher'">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            {{user.type}}
+          </div>
+          <div class="panel-body">
+            <form role="form">
+
+              <div class="form-group">
+                <label>Cathedra</label>
+                <input class="form-control" type="text" [value]="user.cathedra" [disabled]="true"/>
+              </div>
+              <div class="form-group">
+                <label>Degree</label>
+                <input class="form-control" type="text" [value]="user.degree" [disabled]="true"/>
+              </div>
+              <div class="form-group">
+                <label>Rank</label>
+                <input class="form-control" type="text" [value]="user.rank" [disabled]="true"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.ROW-->
+    <div class="row" >
+      <div class="col-md-6">
+        <!--   Basic Table  -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            Basic Table
+          </div>
+
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Currency</th>
+                  <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="odd gradeX" *ngFor="let item of penalty.content">
+                  <td>{{item.description}}</td>
+                  <td>{{item.price}}</td>
+                  <td>{{item.currency}}</td>
+                  <td class="center">{{item.status}}</td>
+                </tr>
+                </tbody>
+              </table>
+              <div class="d-flex justify-content-between p-2">
+                <ngb-pagination
+                  [collectionSize]="penalty.totalItem" [(page)]='penalty.page'
+                  [pageSize]="searchParameter.pageSize" [maxSize]="15" [boundaryLinks]="true" (pageChange)="setPage('penalty')">
+                </ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- End  Basic Table  -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6" class="center-block" style="width: 1140px">
+      <!--   Basic Table  -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Basic Table
+        </div>
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+              <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Order Date</th>
+                <th>Date of Issue</th>
+                <th>Return date</th>
+                <th>Status</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="odd gradeX" *ngFor="let order of orders.content">
+                <td>{{order.book.name}}</td>
+                <td style="width: 30%"> <div *ngFor="let author of order.book.authors">{{author.name}}</div></td>
+                <td>{{order.orderDate}}</td>
+                <td class="center">{{order.dateOfIssue}}</td>
+                <td class="center">{{order.returnDate}}</td>
+                <td class="center">{{order.status}}</td>
+              </tr>
+              </tbody>
+            </table>
+            <div class="d-flex justify-content-between p-2">
+              <ngb-pagination
+                [collectionSize]="orders.totalItem" [(page)]='orders.page'
+                [pageSize]="searchParameter.pageSize" [maxSize]="15" [boundaryLinks]="true" (pageChange)="setPage('order')">
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End  Basic Table  -->
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

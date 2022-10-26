@@ -5,6 +5,7 @@ import {UserPageComponent} from "./user-page/user-page.component";
 import {LoginComponent} from "./login/login.component";
 import {FormsModule} from "@angular/forms";
 import {BooksComponent} from "./books/books.component";
+import {AuthorComponent} from "./author/author.component";
 
 
 const routes: Routes = [
@@ -12,7 +13,8 @@ const routes: Routes = [
   {path: 'users', component: UsersComponent},
   {path: 'books', component: BooksComponent},
   {path: 'user/:id', component: UserPageComponent},
-  {path: 'author/:id', component: BooksComponent},
+  {path: 'my-page/:id', component: UserPageComponent},
+  {path: 'author/:id', component: AuthorComponent},
   { path: '**', redirectTo: '/404' }
 ];
 

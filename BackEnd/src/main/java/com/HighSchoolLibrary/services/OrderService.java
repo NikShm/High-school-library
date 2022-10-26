@@ -9,7 +9,8 @@ package com.HighSchoolLibrary.services;/*
 import com.HighSchoolLibrary.dto.OrderDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchPattern;
 
 public interface OrderService {
-    PageDTO<OrderDTO> getAll(SearchDTO search);
+    PageDTO<OrderDTO> getAll(SearchDTO<SearchPattern> search);
 }

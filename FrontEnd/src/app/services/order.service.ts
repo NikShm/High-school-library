@@ -18,8 +18,8 @@ export class OrderService {
 
   getOrder(searchParameter: Search): Observable<Page> {
     return this.http.post(GlobalConstants.apiURL +'/api/order/search', searchParameter).pipe(map((data: any) => {
-      data.content.map((order:Order) => {
-        return new Order(order)
+      data.content = data.content.map((order:any) => {
+        return new Order(order);
       })
       return new Page(data.content, data.totalItem);
     }));

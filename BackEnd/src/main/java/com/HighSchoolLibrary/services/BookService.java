@@ -8,9 +8,9 @@ package com.HighSchoolLibrary.services;/*
 
 import com.HighSchoolLibrary.dto.BookDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
-import com.HighSchoolLibrary.dto.search.SearchAuthorsBookDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchPattern;
 
 public interface BookService {
-    PageDTO<BookDTO> getPage(SearchAuthorsBookDTO search);
+    PageDTO<BookDTO> getPage(SearchDTO<SearchPattern> search);
 }

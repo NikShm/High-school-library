@@ -3,6 +3,7 @@ package com.HighSchoolLibrary.controller;
 import com.HighSchoolLibrary.dto.OrderDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.services.impls.OrderServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class OrderController {
     }
 
     @PostMapping("/search")
-    public PageDTO<OrderDTO> getAll(@RequestBody SearchDTO search) {
+    public PageDTO<OrderDTO> getAll(@RequestBody SearchDTO<SearchPattern> search) {
         LOGGER.info("search(search={})", search);
         return service.getAll(search);
     }

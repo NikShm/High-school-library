@@ -9,6 +9,7 @@ package com.HighSchoolLibrary.services;/*
 import com.HighSchoolLibrary.dto.AuthorDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchPattern;
 
 import java.util.Optional;
 
@@ -16,5 +17,5 @@ public interface AuthorService {
 
     Optional<AuthorDTO> getOneAuthor(Integer id);
 
-    PageDTO<AuthorDTO> getPage(SearchDTO searchDTO);
+    PageDTO<AuthorDTO> getPage(SearchDTO<SearchPattern> searchDTO);
 }

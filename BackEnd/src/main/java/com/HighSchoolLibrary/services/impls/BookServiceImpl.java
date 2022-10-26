@@ -3,7 +3,8 @@ package com.HighSchoolLibrary.services.impls;
 
 import com.HighSchoolLibrary.dto.BookDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
-import com.HighSchoolLibrary.dto.search.SearchAuthorsBookDTO;
+import com.HighSchoolLibrary.dto.search.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.entities.Book;
 import com.HighSchoolLibrary.mappers.BookMapper;
 import com.HighSchoolLibrary.services.BookService;
@@ -35,7 +36,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public PageDTO<BookDTO> getPage(SearchAuthorsBookDTO search) {
+    public PageDTO<BookDTO> getPage(SearchDTO<SearchPattern> search) {
         List<BookDTO> postDTOS = new ArrayList<>();
         for (Object entity : entityManager.createNativeQuery(getPageQuery(search), Book.class).getResultList()) {
             postDTOS.add(mapper.toDto((Book) entity));
@@ -43,7 +44,8 @@ public class BookServiceImpl implements BookService {
         Page<BookDTO> page = new PageImpl<>(postDTOS);
         PageDTO<BookDTO> pageDTO = new PageDTO<>();
         pageDTO.setContent(page.getContent());
-        pageDTO.setTotalItem(((BigInteger) entityManager.createNativeQuery(getCountQuery(search.getAuthorId())).getSingleResult()).longValue());
+        pageDTO.setTotalItem(((BigInteger) entityManager.createNativeQuery(getCountQuery(search.getSearchPattern()
+                .getAuthorId())).getSingleResult()).longValue());
         return pageDTO;
     }
 
@@ -51,22 +53,22 @@ public class BookServiceImpl implements BookService {
         return new StringBuilder();
     }
 
-    private String getPageQuery(SearchAuthorsBookDTO search) {
+    private String getPageQuery(SearchDTO<SearchPattern> search) {
         StringBuilder query = getQuery();
-        if (search.getPage() != null && search.getPageSize() != null && search.getSearch() != null) {
+        if (search.getPage() != null && search.getPageSize() != null && search.getSearchPattern().getSearch() != null) {
             query.append("SELECT * FROM book");
-            if (search.getAuthorId() != null) {
+            if (search.getSearchPattern().getAuthorId() != null) {
                 query.append(" Left JOIN book_author ba on book.id = ba.bookid " +
                         "Left JOIN author a on ba.authorid = a.id");
             }
             query.append(" where ");
-            if (!Objects.equals(search.getSearch(), "")) {
-                query.append("book.ts_description @@ phraseto_tsquery('english', '").append(search.getSearch()).append("')")
+            if (!Objects.equals(search.getSearchPattern().getSearch(), "")) {
+                query.append("book.ts_description @@ phraseto_tsquery('english', '").append(search.getSearchPattern().getSearch()).append("')")
                         .append(" or ");
             }
-            query.append("book.name like '%").append(search.getSearch()).append("%'");
-            if (search.getAuthorId() != null) {
-                query.append(" and a.id = ").append(search.getAuthorId());
+            query.append("book.name like '%").append(search.getSearchPattern().getSearch()).append("%'");
+            if (search.getSearchPattern().getAuthorId() != null) {
+                query.append(" and a.id = ").append(search.getSearchPattern().getAuthorId());
             }
             if (search.getSortDirection() != null && search.getSortField() != null) {
                 query.append(" ORDER BY book.").append(search.getSortField()).append(" ").append(search.getSortDirection());
