@@ -9,8 +9,9 @@ package com.HighSchoolLibrary.services;/*
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchPattern;
 
 public interface PenaltyService {
-    PageDTO<PenaltyDTO> getAll(SearchDTO search);
+    PageDTO<PenaltyDTO> getAll(SearchDTO<SearchPattern> search);
 }
 

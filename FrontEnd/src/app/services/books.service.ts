@@ -24,8 +24,8 @@ export class BooksService {
 
   getBooks(searchParameter: any): Observable<Page> {
     return this.http.post(GlobalConstants.apiURL +'/api/books/search', searchParameter).pipe(map((data: any) => {
-      data.content.forEach(function(book:Book,index:number){
-        data.content[index] = new Book(book)
+      data.content = data.content.map((book:Book) => {
+        return new Book(book)
       })
       return new Page(data.content, data.totalItem);
     }));

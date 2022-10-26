@@ -18,7 +18,7 @@ export class PenaltyService {
 
   getPenalty(searchParameter: Search): Observable<Page> {
     return this.http.post(GlobalConstants.apiURL +'/api/penalty/search', searchParameter).pipe(map((data: any) => {
-      data.content.map((penalty:Penalty) => {
+      data.content =data.content.map((penalty:Penalty) => {
         return new Penalty(penalty)
       })
       return new Page(data.content, data.totalItem);

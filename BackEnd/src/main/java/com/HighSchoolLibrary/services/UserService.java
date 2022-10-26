@@ -10,6 +10,7 @@ import com.HighSchoolLibrary.dto.LogInDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.UserDTO;
+import com.HighSchoolLibrary.dto.search.SearchPattern;
 
 import java.io.IOException;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Optional;
 public interface UserService {
     List<UserDTO> getAll();
 
-    PageDTO<UserDTO> getPage(SearchDTO search);
+    PageDTO<UserDTO> getPage(SearchDTO<SearchPattern> search);
 
     Optional<UserDTO> getOneUser(Integer id);
 

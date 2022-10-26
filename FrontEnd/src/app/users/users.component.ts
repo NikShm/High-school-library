@@ -14,7 +14,8 @@ import {Location} from "@angular/common";
 export class UsersComponent implements OnInit {
 
   page:Page = new Page([],0);
-  searchParameter = new Search('',"id","ASC",0,2)
+  searchParameter = new Search("id","ASC",0,2)
+  searchPattern = {search:""}
 
 
   constructor(private userService:UserService,private location: Location) { }
@@ -23,7 +24,7 @@ export class UsersComponent implements OnInit {
     if(!JSON.parse(localStorage.getItem("user")!).isLogIn || JSON.parse(localStorage.getItem("user")!).role == "USER"){
       this.location.back();
     }
-    this.search()
+    this.searchParameter.searchPattern = this.searchPattern
   }
 
   setSortField(field:string){
@@ -32,7 +33,7 @@ export class UsersComponent implements OnInit {
   }
 
   setSearch(text:any){
-    this.searchParameter.search = text
+    this.searchPattern.search = text
     this.setPage()
   }
 

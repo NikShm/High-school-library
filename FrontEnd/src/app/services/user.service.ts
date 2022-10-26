@@ -23,7 +23,7 @@ export class UserService {
 
   getUsers(searchParameter: Search): Observable<Page> {
     return this.http.post(GlobalConstants.apiURL +'/api/users/search', searchParameter).pipe(map((data: any) => {
-      data.content.map((user:User) => {
+      data.content = data.content.map((user:User) => {
         return UserService.setUser(user);
       })
       return new Page(data.content, data.totalItem);

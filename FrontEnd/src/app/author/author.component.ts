@@ -1,26 +1,27 @@
 import {Component, OnInit} from '@angular/core';
 import {Page} from "../models/sheet";
+import {Search} from "../models/search";
 import {ActivatedRoute} from "@angular/router";
 import {Location} from "@angular/common";
 import {BooksService} from "../services/books.service";
 import {Author} from "../models/author";
 import {AuthorService} from "../services/author.service";
-import {Search} from "../models/search";
 
 @Component({
   selector: 'app-users',
-  templateUrl: './books.component.html',
-  styleUrls: ['./books.component.css', '../../assets/css/bootstrap.css', '../../assets/css/font-awesome.css', '../../assets/css/style.css']
+  templateUrl: './author.component.html',
+  styleUrls: ['./author.component.css', '../../assets/css/bootstrap.css', '../../assets/css/font-awesome.css', '../../assets/css/style.css']
 })
-export class BooksComponent implements OnInit {
+export class AuthorComponent implements OnInit {
 
   page: Page = new Page([], 0);
-  searchParameter = new Search("id", "ASC", 0,2)
-  searchPattern = {search:""}
+  searchParameter = new Search("id", "ASC", 0, 2)
+  searchPattern = {search:"",authorId:0}
   author!: Author | null;
 
 
-  constructor(private booksService: BooksService, private location: Location, private route: ActivatedRoute,){
+  constructor(private booksService: BooksService, private location: Location, private route: ActivatedRoute,
+              private authorService: AuthorService) {
   }
 
   ngOnInit(): void {
@@ -28,6 +29,15 @@ export class BooksComponent implements OnInit {
       this.location.back();
     }
     this.searchParameter.searchPattern = this.searchPattern
+    this.route.paramMap.subscribe(params => {
+      if (params.get('id') != null) {
+        this.authorService.getOneAuthor(params.get('id')).subscribe((data: Author) => {
+          this.author = data
+          this.searchPattern.authorId = this.author.id
+          this.setPage()
+        })
+      }
+    })
   }
 
   setSortField(field: string) {
@@ -36,7 +46,7 @@ export class BooksComponent implements OnInit {
   }
 
   setSearch(text: any) {
-    this.searchParameter.searchPattern.search = text
+    this.searchPattern.search = text
     this.setPage()
   }
 

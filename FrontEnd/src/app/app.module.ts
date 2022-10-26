@@ -13,6 +13,8 @@ import { UserPageComponent } from './user-page/user-page.component';
 import {UserService} from "./services/user.service";
 import {LoginComponent} from "./login/login.component";
 import {BooksComponent} from "./books/books.component";
+import {AuthorComponent} from "./author/author.component";
+import {MyPageComponent} from "./my-page/my-page.component";
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import {BooksComponent} from "./books/books.component";
     UserPageComponent,
     LoginComponent,
     BooksComponent,
+    AuthorComponent,
+    MyPageComponent
   ],
   imports: [
     HttpClientModule,

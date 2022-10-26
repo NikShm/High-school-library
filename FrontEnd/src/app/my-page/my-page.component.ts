@@ -10,16 +10,16 @@ import { User} from "../models/user";
 
 @Component({
   selector: 'app-user-page',
-  templateUrl: './user-page.component.html',
-  styleUrls: ['./user-page.component.css']
+  templateUrl: './my-page.component.html',
+  styleUrls: ['./my-page.component.css']
 })
-export class UserPageComponent implements OnInit {
+export class MyPageComponent implements OnInit {
 
   logIn: any;
   user!: any
   penalty: PagesForUser = new PagesForUser(null, 0, 1)
   orders: PagesForUser = new PagesForUser(null, 0, 1)
-  searchParameter = new Search( "id", "ASC", 1,2)
+  searchParameter = new Search("id", "ASC", 1,2)
   searchPattern = {search:""}
 
   constructor(private route: ActivatedRoute, private userService: UserService, private penaltyService: PenaltyService,
@@ -35,9 +35,7 @@ export class UserPageComponent implements OnInit {
       this.searchParameter.searchPattern.search = params.get('id')
       this.logIn = JSON.parse(localStorage.getItem("user")!)
       if (this.logIn.id != params.get('id')) {
-        if (this.logIn.role == "USER") {
           this.location.back();
-        }
       }
       this.userService.getOneUser(params.get('id')).subscribe((data: any) => {
         this.user = UserService.setUser(data)
@@ -69,9 +67,5 @@ export class UserPageComponent implements OnInit {
         })
         break;
     }
-  }
-
-  show() {
-    console.log(this.user)
   }
 }

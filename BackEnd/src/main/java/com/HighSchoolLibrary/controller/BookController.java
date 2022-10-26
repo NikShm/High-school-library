@@ -11,8 +11,8 @@ package com.HighSchoolLibrary.controller;
 
 import com.HighSchoolLibrary.dto.BookDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
-import com.HighSchoolLibrary.dto.search.SearchAuthorsBookDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
+import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.services.impls.BookServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +28,7 @@ public class BookController {
     }
 
     @PostMapping("/search")
-    public PageDTO<BookDTO> search(@RequestBody SearchAuthorsBookDTO search) {
+    public PageDTO<BookDTO> search(@RequestBody SearchDTO<SearchPattern> search) {
         return service.getPage(search);
     }
 }
