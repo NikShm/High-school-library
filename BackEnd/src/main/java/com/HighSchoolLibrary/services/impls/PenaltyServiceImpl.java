@@ -4,6 +4,7 @@ package com.HighSchoolLibrary.services.impls;
 import com.HighSchoolLibrary.dto.BookMap;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
+import com.HighSchoolLibrary.dto.search.PenaltySearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.entities.Order;
@@ -45,14 +46,16 @@ public class PenaltyServiceImpl implements PenaltyService {
     }
 
     @Override
-    public PageDTO<PenaltyDTO> getAll(SearchDTO<SearchPattern> search) {
+    public PageDTO<PenaltyDTO> getAll(SearchDTO<PenaltySearch> search) {
         Sort sort = Sort.by(search.getSortField());
         if (search.getSortDirection() == SortDirection.DESC) {
             sort = sort.descending();
         }
         Query queryPage = new Query();
         PageDTO<PenaltyDTO> dto = new PageDTO<>();
-        queryPage.addCriteria(Criteria.where("id_penalty_kicker").is(Integer.parseInt(search.getSearchPattern().getSearch())));
+        if (search.getSearchPattern() != null) {
+            queryPage.addCriteria(Criteria.where("id_penalty_kicker").is(Integer.parseInt(search.getSearchPattern().getSearch())));
+        }
         dto.setTotalItem(mongoTemplate.count(queryPage,Penalty.class));
         Pageable pageable = PageRequest.of(search.getPage(), search.getPageSize(), sort);
         queryPage.with(pageable);

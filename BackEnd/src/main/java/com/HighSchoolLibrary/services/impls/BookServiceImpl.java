@@ -4,6 +4,7 @@ package com.HighSchoolLibrary.services.impls;
 import com.HighSchoolLibrary.dto.BookDTO;
 import com.HighSchoolLibrary.dto.BookMap;
 import com.HighSchoolLibrary.dto.PageDTO;
+import com.HighSchoolLibrary.dto.search.BookSearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.entities.Book;
@@ -42,7 +43,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public PageDTO<BookDTO> getPage(SearchDTO<SearchPattern> search) {
+    public PageDTO<BookDTO> getPage(SearchDTO<BookSearch> search) {
         List<BookDTO> postDTOS = new ArrayList<>();
         for (Object entity : entityManager.createNativeQuery(getPageQuery(search), Book.class).getResultList()) {
             postDTOS.add(mapper.toDto((Book) entity));
@@ -76,9 +77,9 @@ public class BookServiceImpl implements BookService {
         return new StringBuilder();
     }
 
-    private String getPageQuery(SearchDTO<SearchPattern> search) {
+    private String getPageQuery(SearchDTO<BookSearch> search) {
         StringBuilder query = getQuery();
-        SearchPattern searchPattern = search.getSearchPattern();
+        BookSearch searchPattern = search.getSearchPattern();
         query.append("SELECT * FROM book");
         if (searchPattern != null && searchPattern.getSearch() != null) {
             if (searchPattern.getAuthorId() != null) {

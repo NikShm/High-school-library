@@ -4,6 +4,7 @@ package com.HighSchoolLibrary.services.impls;
 import com.HighSchoolLibrary.dto.BookMap;
 import com.HighSchoolLibrary.dto.OrderDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
+import com.HighSchoolLibrary.dto.search.OrderSearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.entities.Book;
@@ -66,14 +67,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public PageDTO<OrderDTO> getAll(SearchDTO<SearchPattern> search) {
+    public PageDTO<OrderDTO> getAll(SearchDTO<OrderSearch> search) {
         Sort sort = Sort.by(search.getSortField());
         if (search.getSortDirection() == SortDirection.DESC) {
             sort = sort.descending();
         }
         Query queryPage = new Query();
         PageDTO<OrderDTO> dto = new PageDTO<>();
-        queryPage.addCriteria(Criteria.where("id_user").is(Integer.parseInt(search.getSearchPattern().getSearch())));
+        if (search.getSearchPattern() != null) {
+            queryPage.addCriteria(Criteria.where("id_user").is(Integer.parseInt(search.getSearchPattern().getSearch())));
+        }
         dto.setTotalItem(mongoTemplate.count(queryPage, Order.class));
         Pageable pageable = PageRequest.of(search.getPage(), search.getPageSize(), sort);
         queryPage.with(pageable);

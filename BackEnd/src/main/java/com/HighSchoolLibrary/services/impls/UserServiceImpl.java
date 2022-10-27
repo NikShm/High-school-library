@@ -4,6 +4,7 @@ package com.HighSchoolLibrary.services.impls;
 import com.HighSchoolLibrary.dto.LogInDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
+import com.HighSchoolLibrary.dto.search.UserSearch;
 import com.HighSchoolLibrary.dto.usersDTO.UserDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.entities.users.User;
@@ -50,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageDTO<UserDTO> getPage(SearchDTO<SearchPattern> search) {
+    public PageDTO<UserDTO> getPage(SearchDTO<UserSearch> search) {
         Pageable pageable = PageRequest.of(search.getPage(), search.getPageSize(), QueryHelper.getSort(search.getSortDirection(),
                 search.getSortField()));
         Page<User> all = repository.findAll((root, query, criteriaBuilder) -> getPredicate(search, criteriaBuilder, root), pageable);
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService {
         return dto;
     }
 
-    private Predicate getPredicate(SearchDTO<SearchPattern> search, CriteriaBuilder criteriaBuilder, Root<User> user) {
+    private Predicate getPredicate(SearchDTO<UserSearch> search, CriteriaBuilder criteriaBuilder, Root<User> user) {
         List<Predicate> predicates = new ArrayList<>();
         String value = search.getSearchPattern().getSearch();
         if (value != null) {

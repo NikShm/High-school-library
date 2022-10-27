@@ -2,6 +2,7 @@ package com.HighSchoolLibrary.controller;
 
 
 import com.HighSchoolLibrary.dto.*;
+import com.HighSchoolLibrary.dto.search.UserSearch;
 import com.HighSchoolLibrary.dto.usersDTO.StudentDTO;
 import com.HighSchoolLibrary.dto.usersDTO.TeacherDTO;
 import com.HighSchoolLibrary.dto.usersDTO.UserDTO;
@@ -47,7 +48,7 @@ public class UserController {
             notes = "Get search object where describe what page need, page size, sort field, sort type and name or surname user. Return PageDTO object.",
             tags={ "get-page"})
     @PostMapping("/search")
-    public PageDTO<UserDTO> search(@RequestBody SearchDTO<SearchPattern> search) {
+    public PageDTO<UserDTO> search(@RequestBody SearchDTO<UserSearch> search) {
         LOGGER.info("search(search={})", search);
         return service.getPage(search);
     }

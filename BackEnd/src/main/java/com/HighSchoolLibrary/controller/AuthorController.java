@@ -2,6 +2,7 @@ package com.HighSchoolLibrary.controller;
 
 
 import com.HighSchoolLibrary.dto.*;
+import com.HighSchoolLibrary.dto.search.AuthorSearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.services.impls.AuthorServiceImpl;
@@ -28,7 +29,7 @@ public class AuthorController {
     }
 
     @PostMapping("/search")
-    public PageDTO<AuthorDTO> search(@RequestBody SearchDTO<SearchPattern> search) {
+    public PageDTO<AuthorDTO> search(@RequestBody SearchDTO<AuthorSearch> search) {
         return service.getPage(search);
     }
 
