@@ -8,6 +8,7 @@ import com.HighSchoolLibrary.dto.search.UserSearch;
 import com.HighSchoolLibrary.dto.usersDTO.UserDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.entities.users.User;
+import com.HighSchoolLibrary.enums.RoleType;
 import com.HighSchoolLibrary.exceptions.DatabaseFetchException;
 import com.HighSchoolLibrary.mappers.UserMapper;
 import com.HighSchoolLibrary.repositoriesJPA.UsersRepository;
@@ -67,6 +68,15 @@ public class UserServiceImpl implements UserService {
         if (value != null) {
             predicates.add(criteriaBuilder.or(QueryHelper.ilike(user.get("surname"), criteriaBuilder, value),
                     QueryHelper.ilike(user.get("name"), criteriaBuilder, value)));
+        }
+        RoleType roleType = search.getSearchPattern().getRole();
+        if (roleType != null){
+            switch (roleType){
+                case USER -> predicates.add(criteriaBuilder.equal(user.get("role"),RoleType.NONE));
+                case OPERATOR -> predicates.add(criteriaBuilder.equal(user.get("role"),RoleType.USER));
+                case ADMIN -> predicates.add(criteriaBuilder.or(criteriaBuilder.equal(user.get("role"),RoleType.USER)
+                        ,criteriaBuilder.or(criteriaBuilder.equal(user.get("role"),RoleType.OPERATOR))));
+            }
         }
         return predicates.size() == 1 ? predicates.get(0) : criteriaBuilder.and(predicates.toArray(new Predicate[0]));
     }

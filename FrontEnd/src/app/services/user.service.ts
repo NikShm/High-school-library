@@ -11,6 +11,8 @@ import {GlobalConstants} from "../global-constants";
 import {LogIn} from "../models/log-in";
 import {Router} from "@angular/router";
 import {Order} from "../models/order";
+import {Librarian} from "../models/librarian";
+import {Administrator} from "../models/administrator";
 
 @Injectable({
   providedIn: 'root'
@@ -30,9 +32,9 @@ export class UserService {
     }));
   }
 
-  getOneUser(id: any): Observable<User> {
+  getOneUser(id: any): Observable<any> {
     return this.http.get<User>(GlobalConstants.apiURL +'/api/users/id=' + id).pipe(map((data: any) => {
-      return UserService.setUser(data);
+      return data;
     }));
   }
 
@@ -44,6 +46,14 @@ export class UserService {
       }
       case "Teacher": {
         return new Teacher(user);
+        break;
+      }
+      case "Librarian": {
+        return new Librarian(user);
+        break;
+      }
+      case "Administrator": {
+        return new Administrator(user);
         break;
       }
     }

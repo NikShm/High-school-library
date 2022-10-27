@@ -16,6 +16,9 @@ import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
+import java.util.List;
+
 @EnableMongoRepositories(basePackages = "com.HighSchoolLibrary.repositoriesMongo")
 public interface OrderRepository extends MongoRepository<Order, String> {
+    List<Order> findAllByIdUserAndIdBookAndStatus(Integer idAccuser, Integer idBook, String status);
 }

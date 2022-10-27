@@ -1,13 +1,12 @@
 -- create database HighSchoolLibrary;
 
 DROP TABLE IF EXISTS  book, author,book_author;
-DROP TABLE IF EXISTS  teacher,student, users;
+DROP TABLE IF EXISTS  teacher,student, users, librarian, administrator;
 DROP TABLE IF EXISTS  book;
 DROP TYPE IF EXISTS category, userRole;
 
 CREATE TYPE category AS ENUM ('Науково-Популярна');
-
-CREATE TYPE userRole AS ENUM ('USER', 'OPERATOR','ADMIN');
+CREATE TYPE userRole AS ENUM ('NONE','USER', 'OPERATOR','ADMIN');
 
 CREATE TABLE author
 (

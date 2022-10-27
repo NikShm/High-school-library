@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row pad-botm">
       <div class="col-md-12">
-        <h4 class="header-line" (click)="show()">{{user.name}} {{user.surname}}</h4>
+        <h4 class="header-line">{{user.name}} {{user.surname}}</h4>
 
       </div>
 
@@ -28,6 +28,37 @@
               <div class="form-group">
                 <label>Created at</label>
                 <input class="form-control" type="text" [value]="user.createdAt" [disabled]="true"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6 col-xs-12" *ngIf="user.type == 'Librarian'">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            {{user.type}}
+          </div>
+          <div class="panel-body">
+            <form role="form">
+
+              <div class="form-group">
+                <label>Position</label>
+                <input class="form-control" type="text" [value]="user.position" [disabled]="true"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6 col-xs-12" *ngIf="user.type == 'Administrator'">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            {{user.type}}
+          </div>
+          <div class="panel-body">
+            <form role="form">
+              <div class="form-group">
+                <label>Degree</label>
+                <input class="form-control" type="text" [value]="user.degree" [disabled]="true"/>
               </div>
             </form>
           </div>
@@ -152,6 +183,7 @@
                 <td class="center">{{order.dateOfIssue}}</td>
                 <td class="center">{{order.returnDate}}</td>
                 <td class="center">{{order.status}}</td>
+                <td class="center" (click)="toIssue(order)" *ngIf="order.status == 'Замовленно'"><button type="submit" class="btn btn-danger" >To Issue</button></td>
               </tr>
               </tbody>
             </table>

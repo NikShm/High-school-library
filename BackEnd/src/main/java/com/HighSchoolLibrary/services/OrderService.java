@@ -23,5 +23,5 @@ public interface OrderService {
 
     void toIssue(OrderDTO orderDTO);
 
-    void abolition(OrderDTO orderDTO);
+    void abolition(Integer id,OrderDTO orderDTO);
 }

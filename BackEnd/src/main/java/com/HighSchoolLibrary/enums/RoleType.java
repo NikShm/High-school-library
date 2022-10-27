@@ -8,6 +8,7 @@ package com.HighSchoolLibrary.enums;
  * @since 7/6/2022 - 19.47
  **/
 public enum RoleType {
+    NONE,
     USER,
     ADMIN,
     OPERATOR

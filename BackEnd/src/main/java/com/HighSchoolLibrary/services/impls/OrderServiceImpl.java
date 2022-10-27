@@ -21,6 +21,7 @@ import com.HighSchoolLibrary.repositoriesJPA.UsersRepository;
 import com.HighSchoolLibrary.repositoriesMongo.OrderRepository;
 import com.HighSchoolLibrary.repositoriesMongo.PenaltyRepository;
 import com.HighSchoolLibrary.services.OrderService;
+import io.swagger.models.auth.In;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,6 +36,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
@@ -110,10 +112,14 @@ public class OrderServiceImpl implements OrderService {
         bookRepository.
                 findById(orderDTO.getBook().getId())
                 .orElseThrow(() -> new DatabaseFetchException(orderDTO.getBook().getId(), Book.class.getSimpleName()));
-        ZoneId zid = ZoneId.of("Europe/Kiev");
-        orderDTO.setOrderDate(LocalDateTime.now(zid));
-        orderDTO.setStatus("Замовленно");
-        orderRepository.save(mapper.toEntity(orderDTO));
+        List<Order> order = orderRepository.findAllByIdUserAndIdBookAndStatus(orderDTO.getIdUser(),orderDTO.getBook().getId(), "Замовленно");
+        if(order.isEmpty()) {
+            ZoneId zid = ZoneId.of("Europe/Kiev");
+            ;
+            orderDTO.setOrderDate(LocalDateTime.now(zid));
+            orderDTO.setStatus("Замовленно");
+            orderRepository.save(mapper.toEntity(orderDTO));
+        }
     }
 
     @Override
@@ -124,25 +130,29 @@ public class OrderServiceImpl implements OrderService {
         bookRepository.
                 findById(orderDTO.getBook().getId())
                 .orElseThrow(() -> new DatabaseFetchException(orderDTO.getBook().getId(), Book.class.getSimpleName()));
-//        Order order = orderRepository.findById(orderDTO.getId())
-//                .orElseThrow(() -> new DatabaseFetchException(Integer.parseInt(orderDTO.getId()), Order.class.getSimpleName()));
-        orderDTO.setDateOfIssue(LocalDateTime.now(zid));
-        if (orderDTO.getDateOfIssue() != null) {
+        Order order = orderRepository.findById(orderDTO.getId())
+                .orElseThrow(() -> new DatabaseFetchException(Integer.parseInt(orderDTO.getId()), Order.class.getSimpleName()));
+        order.setDateOfIssue(LocalDateTime.now(zid));
+        if (order.getDateOfIssue() != null) {
             switch (user.getType()) {
-                case "Student" -> orderDTO.setReturnDate(orderDTO.getDateOfIssue().plusSeconds(20));
-                case "Teacher" -> orderDTO.setReturnDate(orderDTO.getDateOfIssue().plusSeconds(30));
-                case "Administrator" -> orderDTO.setReturnDate(orderDTO.getDateOfIssue().plusSeconds(40));
-                case "Librarian" -> orderDTO.setReturnDate(orderDTO.getDateOfIssue().plusSeconds(35));
+                case "Student" -> order.setReturnDate(order.getDateOfIssue().plusSeconds(20));
+                case "Teacher" -> order.setReturnDate(order.getDateOfIssue().plusSeconds(30));
+                case "Administrator" -> order.setReturnDate(order.getDateOfIssue().plusSeconds(40));
+                case "Librarian" -> order.setReturnDate(order.getDateOfIssue().plusSeconds(35));
             }
         }
-        orderDTO.setStatus("Взято");
-        orderRepository.save(mapper.toEntity(orderDTO));
+        order.setStatus("Взято");
+        orderRepository.save(order);
     }
 
     @Override
-    public void abolition(OrderDTO orderDTO){
-        orderDTO.setStatus("Відмінено");
-        orderRepository.save(mapper.toEntity(orderDTO));
+    public void abolition(Integer id, OrderDTO orderDTO){
+        Order order = orderRepository.findById(orderDTO.getId())
+                .orElseThrow(() -> new DatabaseFetchException(Integer.parseInt(orderDTO.getId()), Order.class.getSimpleName()));
+        if (Objects.equals(id, orderDTO.getIdUser()) && Objects.equals(order.getStatus(), "Замовленно")) {
+            order.setStatus("Відмінено");
+            orderRepository.save(order);
+        }
     }
 
     @Scheduled(fixedDelay = 10000)
@@ -150,10 +160,8 @@ public class OrderServiceImpl implements OrderService {
         Query queryPage = new Query();
         orderRepository.saveAll(mongoTemplate.find(queryPage, Order.class).stream().peek(order -> {
             if (order.getReturnDate() != null) {
-                if (order.getReturnDate().isBefore(LocalDateTime.now(zid))) {
-                    List<Penalty> penalties = penaltyRepository.findAllByIdAccuserAndIdBookAndStatus(order.getIdUser(),order.getIdBook(), "Неоплачено");
-                    if (penalties.isEmpty()) {
-                        order.setStatus("Запізненння");
+                if (order.getReturnDate().isBefore(LocalDateTime.now(zid)) && order.getStatus().equals("Взято")) {
+                        System.out.println(order.getStatus());
                         Book book = bookRepository.
                                 findById(order.getIdBook()).orElseThrow(() -> new DatabaseFetchException(order.getIdBook(), Book.class.getSimpleName()));
                         Penalty penalty = new Penalty();
@@ -162,9 +170,9 @@ public class OrderServiceImpl implements OrderService {
                         penalty.setCurrency("UAH");
                         penalty.setIdBook(order.getIdBook());
                         penalty.setDescription("Не повернув вчасно книжку " + book.getName());
-                        penalty.setIdAccuser(order.getIdUser());
+                        penalty.setIdPenaltyKicker(order.getIdUser());
                         penaltyRepository.save(penalty);
-                    }
+                        order.setStatus("Запізнення");
                 }
             }
         }).toList());

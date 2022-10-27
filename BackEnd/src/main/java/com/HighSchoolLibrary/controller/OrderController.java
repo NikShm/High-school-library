@@ -59,11 +59,9 @@ public class OrderController {
         }
     }
 
-    @RequestMapping(value = "/abolition/{id}")
+    @PostMapping(value = "/abolition/{id}")
     public void abolition(@PathVariable("id") Integer id, @RequestBody OrderDTO orderDTO) {
-        if (Objects.equals(id, orderDTO.getIdUser()) && Objects.equals(orderDTO.getStatus(), "Замовленно")){
-            orderService.abolition(orderDTO);
-        }
+            orderService.abolition(id, orderDTO);
     }
 
 }
