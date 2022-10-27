@@ -2,9 +2,13 @@ package com.HighSchoolLibrary.controller;
 
 
 import com.HighSchoolLibrary.dto.*;
+import com.HighSchoolLibrary.dto.search.UserSearch;
+import com.HighSchoolLibrary.dto.usersDTO.StudentDTO;
+import com.HighSchoolLibrary.dto.usersDTO.TeacherDTO;
+import com.HighSchoolLibrary.dto.usersDTO.UserDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
-import com.HighSchoolLibrary.entities.User;
+import com.HighSchoolLibrary.entities.users.User;
 import com.HighSchoolLibrary.mappers.AuthorMapper;
 import com.HighSchoolLibrary.repositoriesJPA.AuthorRepository;
 import com.HighSchoolLibrary.services.impls.UserServiceImpl;
@@ -44,7 +48,7 @@ public class UserController {
             notes = "Get search object where describe what page need, page size, sort field, sort type and name or surname user. Return PageDTO object.",
             tags={ "get-page"})
     @PostMapping("/search")
-    public PageDTO<UserDTO> search(@RequestBody SearchDTO<SearchPattern> search) {
+    public PageDTO<UserDTO> search(@RequestBody SearchDTO<UserSearch> search) {
         LOGGER.info("search(search={})", search);
         return service.getPage(search);
     }

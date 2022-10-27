@@ -3,6 +3,7 @@ package com.HighSchoolLibrary.services.impls;
 
 import com.HighSchoolLibrary.dto.AuthorDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
+import com.HighSchoolLibrary.dto.search.AuthorSearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.entities.Author;
@@ -47,7 +48,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public PageDTO<AuthorDTO> getPage(SearchDTO<SearchPattern> search) {
+    public PageDTO<AuthorDTO> getPage(SearchDTO<AuthorSearch> search) {
         Pageable pageable = PageRequest.of(search.getPage(), search.getPageSize(), QueryHelper.getSort(search.getSortDirection()
                 , search.getSortField()));
         Page<Author> all = repository.findAll((root, query, criteriaBuilder) -> getPredicate(search, criteriaBuilder, root), pageable);
@@ -57,7 +58,7 @@ public class AuthorServiceImpl implements AuthorService {
         return dto;
     }
 
-    private Predicate getPredicate(SearchDTO<SearchPattern> search, CriteriaBuilder criteriaBuilder, Root<Author> user) {
+    private Predicate getPredicate(SearchDTO<AuthorSearch> search, CriteriaBuilder criteriaBuilder, Root<Author> user) {
         List<Predicate> predicates = new ArrayList<>();
         String value = search.getSearchPattern().getSearch();
         if (value != null) {

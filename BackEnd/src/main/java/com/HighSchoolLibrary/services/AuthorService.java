@@ -8,6 +8,7 @@ package com.HighSchoolLibrary.services;/*
 
 import com.HighSchoolLibrary.dto.AuthorDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
+import com.HighSchoolLibrary.dto.search.AuthorSearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
 
@@ -17,5 +18,5 @@ public interface AuthorService {
 
     Optional<AuthorDTO> getOneAuthor(Integer id);
 
-    PageDTO<AuthorDTO> getPage(SearchDTO<SearchPattern> searchDTO);
+    PageDTO<AuthorDTO> getPage(SearchDTO<AuthorSearch> searchDTO);
 }

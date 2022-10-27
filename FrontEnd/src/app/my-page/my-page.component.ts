@@ -19,8 +19,9 @@ export class MyPageComponent implements OnInit {
   user!: any
   penalty: PagesForUser = new PagesForUser(null, 0, 1)
   orders: PagesForUser = new PagesForUser(null, 0, 1)
-  searchParameter = new Search("id", "ASC", 1,2)
+  searchParameter = new Search("id", "DESC", 1,2)
   searchPattern = {search:""}
+  id = JSON.parse(localStorage.getItem("user")!).id;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private penaltyService: PenaltyService,
               private orderService: OrderService,private location: Location) {
@@ -37,6 +38,7 @@ export class MyPageComponent implements OnInit {
       if (this.logIn.id != params.get('id')) {
           this.location.back();
       }
+      console.log(1)
       this.userService.getOneUser(params.get('id')).subscribe((data: any) => {
         this.user = UserService.setUser(data)
         this.setPage("penalty")
@@ -54,7 +56,6 @@ export class MyPageComponent implements OnInit {
       case "order":
         this.searchParameter.page = this.orders.page - 1;
         this.orderService.getOrder(this.searchParameter).subscribe((data: any) => {
-          console.log(data)
           this.orders.content = data.content;
           this.orders.totalItem = data.totalItem;
         })
@@ -67,5 +68,9 @@ export class MyPageComponent implements OnInit {
         })
         break;
     }
+  }
+
+  abolition(order:number){
+    this.orderService.abolition(this.id, order)
   }
 }

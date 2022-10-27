@@ -1,56 +1,34 @@
-package com.HighSchoolLibrary.entities;
+package com.HighSchoolLibrary.dto.usersDTO;
 
-
-import com.HighSchoolLibrary.dto.StudentDTO;
+import com.HighSchoolLibrary.entities.users.Student;
+import com.HighSchoolLibrary.entities.users.User;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.*;
-
-/*
-@author Микола
-@project High_school_library
-@class Student
-@version 1.0.0
-@since 01.08.2022 - 16.35
-*/
-@Entity
-@Table(name="student")
+/**
+ * @author Yuliana
+ * @version 1.0.0
+ * @project FreshBeauty
+ * @class StudentDTO
+ * @since 7/7/2022 - 08.27
+ **/
 @ApiModel(description = "The class that represents the student",parent = User.class, value = "Student", discriminator = "id")
-public class Student extends User {
-    @Id
-    @Column(name = "id", nullable = false)
-    @ApiModelProperty(allowableValues = "128", value = "The discriminator field.", readOnly = true, dataType = "Integer")
-    private Integer id;
-    @Column(name="faculty", nullable = false)
+public class StudentDTO extends UserDTO{
     @ApiModelProperty(allowableValues = "128", value = "The faculty in which student study.", readOnly = true, dataType = "String")
     private String faculty;
-    @Column(name="group", length = 32, nullable = false)
     @ApiModelProperty(allowableValues = "32", value = "The group in which student study.", readOnly = true, dataType = "String")
     private String group;
-    @Column(name="subgroup", length = 32, nullable = false)
     @ApiModelProperty(allowableValues = "32", value = "The subgroup in which student study.", readOnly = true, dataType = "String")
     private String subgroup;
 
-    public Student() {
+    public StudentDTO() {
     }
 
-    public Student(StudentDTO dto) {
-        super(dto);
-        this.id = dto.getId();
-        this.faculty = dto.getFaculty();
-        this.group = dto.getGroup();
-        this.subgroup = dto.getSubgroup();
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
+    public StudentDTO(Student student) {
+        super(student);
+        this.faculty = student.getFaculty();
+        this.group = student.getGroup();
+        this.subgroup = student.getSubgroup();
     }
 
     public String getFaculty() {
@@ -79,9 +57,8 @@ public class Student extends User {
 
     @Override
     public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", faculty=" + faculty +
+        return "StudentDTO{" +
+                "faculty='" + faculty + '\'' +
                 ", group='" + group + '\'' +
                 ", subgroup='" + subgroup + '\'' +
                 '}';

@@ -11,6 +11,7 @@ package com.HighSchoolLibrary.controller;
 
 import com.HighSchoolLibrary.dto.BookDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
+import com.HighSchoolLibrary.dto.search.BookSearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.services.impls.BookServiceImpl;
@@ -28,7 +29,7 @@ public class BookController {
     }
 
     @PostMapping("/search")
-    public PageDTO<BookDTO> search(@RequestBody SearchDTO<SearchPattern> search) {
+    public PageDTO<BookDTO> search(@RequestBody SearchDTO<BookSearch> search) {
         return service.getPage(search);
     }
 }

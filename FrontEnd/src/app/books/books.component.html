@@ -57,7 +57,7 @@
                   <td class="center">{{book.price}}</td>
                   <td class="center">{{book.category}}</td>
                   <td class="center">{{book.count}}</td>
-                  <td class="center"><button type="submit" class="btn btn-danger">Order</button></td>
+                  <td class="center" (click)="setOrder(book.id)"><button type="submit" class="btn btn-danger">Order</button></td>
                 </tr>
                 </tbody>
               </table>

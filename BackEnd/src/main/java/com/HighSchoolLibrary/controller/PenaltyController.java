@@ -3,6 +3,7 @@ package com.HighSchoolLibrary.controller;
 
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
+import com.HighSchoolLibrary.dto.search.PenaltySearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.services.impls.PenaltyServiceImpl;
@@ -29,7 +30,7 @@ public class PenaltyController {
     }
 
     @PostMapping("/search")
-    public PageDTO<PenaltyDTO> getAll(@RequestBody SearchDTO<SearchPattern> search) {
+    public PageDTO<PenaltyDTO> getAll(@RequestBody SearchDTO<PenaltySearch> search) {
         LOGGER.info("search(search={})", search);
         return penaltyService.getAll(search);
     }

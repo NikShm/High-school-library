@@ -6,6 +6,8 @@ values ('X', 'Y', 'USER', 'Q', '1', 'Teacher'),
        ('X', 'Y', 'USER', 'F', '5', 'Student'),
        ('X', 'Y', 'USER', 'J', '6', 'Student');
 
+insert into users(name, surname, role, login, password, type)
+values ('X', 'Y', 'OPERATOR', 'admin', '7', 'Teacher');
 
 insert into teacher(id, cathedra, degree, rank)
 values ('1', 'Y', 'tr', '1'),

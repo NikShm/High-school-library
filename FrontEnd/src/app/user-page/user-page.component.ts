@@ -21,6 +21,7 @@ export class UserPageComponent implements OnInit {
   orders: PagesForUser = new PagesForUser(null, 0, 1)
   searchParameter = new Search( "id", "ASC", 1,2)
   searchPattern = {search:""}
+  id = JSON.parse(localStorage.getItem("user")!).id;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private penaltyService: PenaltyService,
               private orderService: OrderService,private location: Location) {
@@ -56,7 +57,6 @@ export class UserPageComponent implements OnInit {
       case "order":
         this.searchParameter.page = this.orders.page - 1;
         this.orderService.getOrder(this.searchParameter).subscribe((data: any) => {
-          console.log(data)
           this.orders.content = data.content;
           this.orders.totalItem = data.totalItem;
         })
@@ -71,7 +71,7 @@ export class UserPageComponent implements OnInit {
     }
   }
 
-  show() {
-    console.log(this.user)
+  toIssue(order:any){
+      this.orderService.toIssue(this.id, order)
   }
 }

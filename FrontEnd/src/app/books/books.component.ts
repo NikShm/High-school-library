@@ -6,6 +6,8 @@ import {BooksService} from "../services/books.service";
 import {Author} from "../models/author";
 import {AuthorService} from "../services/author.service";
 import {Search} from "../models/search";
+import {OrderService} from "../services/order.service";
+import {Order} from "../models/order";
 
 @Component({
   selector: 'app-users',
@@ -18,9 +20,11 @@ export class BooksComponent implements OnInit {
   searchParameter = new Search("id", "ASC", 0,2)
   searchPattern = {search:""}
   author!: Author | null;
+  order = {idUser:JSON.parse(localStorage.getItem("user")!).id, book:{id:0}};
 
 
-  constructor(private booksService: BooksService, private location: Location, private route: ActivatedRoute,){
+  constructor(private booksService: BooksService, private location: Location, private route: ActivatedRoute
+              ,private orderService:OrderService){
   }
 
   ngOnInit(): void {
@@ -55,5 +59,10 @@ export class BooksComponent implements OnInit {
     this.booksService.getBooks(this.searchParameter).subscribe((data: any) => {
       this.page = data;
     })
+  }
+
+  setOrder(id:number){
+    this.order.book.id = id
+    this.orderService.setOrder(this.order)
   }
 }
