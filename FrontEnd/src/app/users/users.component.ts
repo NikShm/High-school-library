@@ -14,7 +14,7 @@ import {Location} from "@angular/common";
 export class UsersComponent implements OnInit {
 
   page:Page = new Page([],0);
-  searchParameter = new Search("id","DESC",0,2)
+  searchParameter = new Search("id","ASC",0,2)
   searchPattern = {search:"",role:JSON.parse(localStorage.getItem("user")!).role}
   user!:any
 

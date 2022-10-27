@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {UserService} from "../services/user.service";
 import {Search} from "../models/search";
 import {PenaltyService} from "../services/penalty.service";
 import {Page, PagesForUser} from "../models/sheet";
 import {OrderService} from "../services/order.service";
 import {Location} from '@angular/common';
-import { User} from "../models/user";
 
 @Component({
   selector: 'app-user-page',
@@ -19,12 +18,12 @@ export class UserPageComponent implements OnInit {
   user!: any
   penalty: PagesForUser = new PagesForUser(null, 0, 1)
   orders: PagesForUser = new PagesForUser(null, 0, 1)
-  searchParameter = new Search( "id", "ASC", 1,2)
-  searchPattern = {search:""}
+  searchParameter = new Search("id", "DESC", 1, 2)
+  searchPattern = {search: ""}
   id = JSON.parse(localStorage.getItem("user")!).id;
 
   constructor(private route: ActivatedRoute, private userService: UserService, private penaltyService: PenaltyService,
-              private orderService: OrderService,private location: Location) {
+              private orderService: OrderService, private location: Location) {
   }
 
   ngOnInit(): void {
@@ -35,10 +34,8 @@ export class UserPageComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.searchParameter.searchPattern.search = params.get('id')
       this.logIn = JSON.parse(localStorage.getItem("user")!)
-      if (this.logIn.id != params.get('id')) {
-        if (this.logIn.role == "USER") {
-          this.location.back();
-        }
+      if (this.logIn.role == "USER") {
+        this.location.back();
       }
       this.userService.getOneUser(params.get('id')).subscribe((data: any) => {
         this.user = UserService.setUser(data)
@@ -71,7 +68,15 @@ export class UserPageComponent implements OnInit {
     }
   }
 
-  toIssue(order:any){
-      this.orderService.toIssue(this.id, order)
+  toIssue(order: any) {
+    this.orderService.toIssue(this.id, order).subscribe(() => {
+      this.setPage("order")
+    })
+  }
+
+  pay(idPenalty: string) {
+    this.penaltyService.pay(this.id, idPenalty).subscribe(() => {
+      this.setPage("penalty")
+    })
   }
 }

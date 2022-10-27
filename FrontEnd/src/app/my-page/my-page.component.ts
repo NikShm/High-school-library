@@ -71,6 +71,6 @@ export class MyPageComponent implements OnInit {
   }
 
   abolition(order:number){
-    this.orderService.abolition(this.id, order)
+    this.orderService.abolition(this.id, order).subscribe(()=>{this.search("order")})
   }
 }

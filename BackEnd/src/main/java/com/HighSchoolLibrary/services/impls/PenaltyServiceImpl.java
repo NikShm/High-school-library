@@ -6,11 +6,12 @@ import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
 import com.HighSchoolLibrary.dto.search.PenaltySearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
-import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.entities.Order;
 import com.HighSchoolLibrary.entities.Penalty;
 import com.HighSchoolLibrary.enums.SortDirection;
+import com.HighSchoolLibrary.exceptions.DatabaseFetchException;
 import com.HighSchoolLibrary.mappers.PenaltyMapper;
+import com.HighSchoolLibrary.repositoriesMongo.PenaltyRepository;
 import com.HighSchoolLibrary.services.PenaltyService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,10 +40,12 @@ public class PenaltyServiceImpl implements PenaltyService {
 
     private final PenaltyMapper mapper;
     private final MongoTemplate mongoTemplate;
+    private final PenaltyRepository penaltyRepository;
 
-    public PenaltyServiceImpl(PenaltyMapper mapper, MongoTemplate mongoTemplate) {
+    public PenaltyServiceImpl(PenaltyMapper mapper, MongoTemplate mongoTemplate, PenaltyRepository penaltyRepository) {
         this.mapper = mapper;
         this.mongoTemplate = mongoTemplate;
+        this.penaltyRepository = penaltyRepository;
     }
 
     @Override
@@ -77,5 +80,13 @@ public class PenaltyServiceImpl implements PenaltyService {
         List<BookMap> result = groupResults.getMappedResults();
         System.out.println(result);
         return result;
+    }
+
+    @Override
+    public void pay(String idPenalty){
+        Penalty penalty =  penaltyRepository.findById(idPenalty)
+                .orElseThrow(() -> new DatabaseFetchException(Integer.parseInt(idPenalty), Order.class.getSimpleName()));
+        penalty.setStatus("Оплачено");
+        penaltyRepository.save(penalty);
     }
 }

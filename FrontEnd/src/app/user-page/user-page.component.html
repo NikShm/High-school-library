@@ -139,6 +139,7 @@
                   <td>{{item.price}}</td>
                   <td>{{item.currency}}</td>
                   <td class="center">{{item.status}}</td>
+                  <td class="center" (click)="pay(item.id)" *ngIf="item.status == 'Неоплачено'"><button type="submit" class="btn btn-danger" >Pay</button></td>
                 </tr>
                 </tbody>
               </table>
@@ -183,7 +184,6 @@
                 <td class="center">{{order.dateOfIssue}}</td>
                 <td class="center">{{order.returnDate}}</td>
                 <td class="center">{{order.status}}</td>
-                <td class="center" (click)="toIssue(order)" *ngIf="order.status == 'Замовленно'"><button type="submit" class="btn btn-danger" >To Issue</button></td>
               </tr>
               </tbody>
             </table>
