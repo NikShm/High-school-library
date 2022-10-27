@@ -195,6 +195,33 @@
           </div>
         </div>
       </div>
+      <div class="col-md-6 col-sm-6 col-xs-12" *ngIf="user.role != 'USER'">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            Penalty
+          </div>
+          <div class="panel-body">
+            <form role="form">
+              <div class="form-group">
+                <label>Id User</label>
+                <input class="form-control" type="text" [value]="penaltyCreate.idPenaltyKicker" (change)="setIdUser($event)"/>
+              </div>
+              <div class="form-group">
+                <label>Id book</label>
+                <input class="form-control" type="text" [value]="penaltyCreate.idBook" (change)="setIdBook($event)"/>
+              </div>
+              <div class="form-group">
+                <label>Тип штрафу</label>
+                <select class="form-control" [value]="penaltyCreate.description" (change)="setDescription($event)">
+                  <option >Спортив книжку</option>
+                  <option>Спортив книжку(Загубив)</option>
+                </select>
+              </div>
+              <td class="center" (click)="toreTheBook()"><button type="submit" class="btn btn-danger" >Create</button></td>
+            </form>
+          </div>
+        </div>
+      </div>
       <!-- End  Basic Table  -->
     </div>
   </div>

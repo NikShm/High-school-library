@@ -22,6 +22,7 @@ export class MyPageComponent implements OnInit {
   searchParameter = new Search("id", "DESC", 1,2)
   searchPattern = {search:""}
   id = JSON.parse(localStorage.getItem("user")!).id;
+  penaltyCreate = {idAccuser:this.id, idPenaltyKicker:0,idBook:0, description:""}
 
   constructor(private route: ActivatedRoute, private userService: UserService, private penaltyService: PenaltyService,
               private orderService: OrderService,private location: Location) {
@@ -72,5 +73,20 @@ export class MyPageComponent implements OnInit {
 
   abolition(order:number){
     this.orderService.abolition(this.id, order).subscribe(()=>{this.search("order")})
+  }
+
+  toreTheBook(){
+    console.log(this.penaltyCreate)
+    this.penaltyService.create(this.penaltyCreate).subscribe(()=>{this.setPage("penalty")})
+  }
+
+  setDescription(event:any){
+    this.penaltyCreate.description = event.target.value
+  }
+  setIdUser(event:any){
+    this.penaltyCreate.idPenaltyKicker = event.target.value
+  }
+  setIdBook(event:any){
+    this.penaltyCreate.idBook = event.target.value
   }
 }

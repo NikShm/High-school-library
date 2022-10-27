@@ -1,6 +1,7 @@
 package com.HighSchoolLibrary.controller;
 
 
+import com.HighSchoolLibrary.dto.OrderDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
 import com.HighSchoolLibrary.dto.search.PenaltySearch;
@@ -47,6 +48,16 @@ public class PenaltyController {
                 .orElseThrow(() -> new DatabaseFetchException(id, User.class.getSimpleName()));
         if (!user.getRole().equals(RoleType.USER)){
             penaltyService.pay(idPenalty);
+        }
+    }
+
+    @RequestMapping(value = "/create")
+    public void toIssue(@RequestBody PenaltyDTO penaltyDTO) {
+        User user = usersRepository.
+                findById(penaltyDTO.getIdAccuser())
+                .orElseThrow(() -> new DatabaseFetchException(penaltyDTO.getIdAccuser(), User.class.getSimpleName()));
+        if (!user.getRole().equals(RoleType.USER)){
+            penaltyService.create(penaltyDTO);
         }
     }
 }

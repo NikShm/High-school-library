@@ -21,5 +21,7 @@ public interface PenaltyService {
     List<BookMap> getCount(List<Integer> ids);
 
     void pay(String idPenalty);
+
+    void create(PenaltyDTO penaltyDTO);
 }
 

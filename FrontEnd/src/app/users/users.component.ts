@@ -5,6 +5,7 @@ import {Page} from "../models/sheet";
 import {Search} from "../models/search";
 import {Router} from "@angular/router";
 import {Location} from "@angular/common";
+import {PenaltyService} from "../services/penalty.service";
 
 @Component({
   selector: 'app-users',
@@ -16,7 +17,6 @@ export class UsersComponent implements OnInit {
   page:Page = new Page([],0);
   searchParameter = new Search("id","ASC",0,2)
   searchPattern = {search:"",role:JSON.parse(localStorage.getItem("user")!).role}
-  user!:any
 
 
   constructor(private userService:UserService,private location: Location) { }
@@ -26,7 +26,6 @@ export class UsersComponent implements OnInit {
       this.location.back();
     }
     this.searchParameter.searchPattern = this.searchPattern
-    this.user = localStorage.getItem("user");
   }
 
   setSortField(field:string){
@@ -53,4 +52,6 @@ export class UsersComponent implements OnInit {
   search() {
     this.userService.getUsers(this.searchParameter).subscribe((data:any)=>{this.page = data})
   }
+
+
 }

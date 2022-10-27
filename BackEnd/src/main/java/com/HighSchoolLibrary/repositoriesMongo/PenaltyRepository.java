@@ -18,5 +18,5 @@ import java.util.List;
 
 @EnableMongoRepositories(basePackages = "com.HighSchoolLibrary.repositoriesMongo")
 public interface PenaltyRepository extends MongoRepository<Penalty, String> {
-    List<Penalty> findAllByIdPenaltyKickerAndIdBookAndStatus(Integer idPenaltyKicker,Integer idBook, String status);
+    List<Penalty> findAllByIdBook(Integer idBook);
 }

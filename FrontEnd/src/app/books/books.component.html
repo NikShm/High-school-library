@@ -16,8 +16,8 @@
           </div>
           <div class="panel-body">
             <div class="table-responsive">
-              <div class="search-container" >
-                <form action="#"  >
+              <div class="search-container">
+                <form action="#">
                   <input type="text" autocomplete="off"
                          placeholder="Search..." name="search" #search>
                   <button type="submit" (click)="setSearch(search.value)"><i
@@ -50,14 +50,18 @@
                 </thead>
                 <tbody>
                 <tr class="odd gradeX" *ngFor="let book of page.content">
-                  <td >{{book.id}}</td>
+                  <td>{{book.id}}</td>
                   <td>{{book.name}}</td>
-                  <td> <div *ngFor="let author of book.authors" routerLink='/author/{{author.id}}'>{{author.name}}</div></td>
+                  <td>
+                    <div *ngFor="let author of book.authors" routerLink='/author/{{author.id}}'>{{author.name}}</div>
+                  </td>
                   <td class="center" style="width: 40%">{{book.description}}</td>
                   <td class="center">{{book.price}}</td>
                   <td class="center">{{book.category}}</td>
                   <td class="center">{{book.count}}</td>
-                  <td class="center" (click)="setOrder(book.id)"><button type="submit" class="btn btn-danger">Order</button></td>
+                  <td class="center" (click)="setOrder(book.id)">
+                    <button type="submit" class="btn btn-danger">Order</button>
+                  </td>
                 </tr>
                 </tbody>
               </table>

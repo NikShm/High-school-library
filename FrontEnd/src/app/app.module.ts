@@ -15,6 +15,9 @@ import {LoginComponent} from "./login/login.component";
 import {BooksComponent} from "./books/books.component";
 import {AuthorComponent} from "./author/author.component";
 import {MyPageComponent} from "./my-page/my-page.component";
+import {CreateStudentPageComponent} from "./create-student-page/create-student-page.component";
+import {CreateLibrarianPageComponent} from "./create-librarian-page/create-librarian-page.component";
+import {CreateTeacherPageComponent} from "./create-teacher-page/create-teacher-page.component";
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import {MyPageComponent} from "./my-page/my-page.component";
     LoginComponent,
     BooksComponent,
     AuthorComponent,
-    MyPageComponent
+    MyPageComponent,
+    CreateStudentPageComponent,
+    CreateLibrarianPageComponent,
+    CreateTeacherPageComponent
   ],
   imports: [
     HttpClientModule,
