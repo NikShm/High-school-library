@@ -8,7 +8,7 @@
       </div>
 
     </div>
-    <div class="row" >
+    <div class="row">
       <div class="col-md-6 col-sm-6 col-xs-12">
         <div class="panel panel-danger">
           <div class="panel-heading">
@@ -114,7 +114,7 @@
       </div>
     </div>
     <!--/.ROW-->
-    <div class="row" >
+    <div class="row">
       <div class="col-md-6">
         <!--   Basic Table  -->
         <div class="panel panel-default">
@@ -139,13 +139,17 @@
                   <td>{{item.price}}</td>
                   <td>{{item.currency}}</td>
                   <td class="center">{{item.status}}</td>
+                  <td class="center" (click)="pay(item.id)" *ngIf="item.status == 'Неоплачено'">
+                    <button type="submit" class="btn btn-danger">Pay</button>
+                  </td>
                 </tr>
                 </tbody>
               </table>
               <div class="d-flex justify-content-between p-2">
                 <ngb-pagination
                   [collectionSize]="penalty.totalItem" [(page)]='penalty.page'
-                  [pageSize]="searchParameter.pageSize" [maxSize]="15" [boundaryLinks]="true" (pageChange)="setPage('penalty')">
+                  [pageSize]="searchParameter.pageSize" [maxSize]="15" [boundaryLinks]="true"
+                  (pageChange)="setPage('penalty')">
                 </ngb-pagination>
               </div>
             </div>
@@ -178,19 +182,24 @@
               <tbody>
               <tr class="odd gradeX" *ngFor="let order of orders.content">
                 <td>{{order.book.name}}</td>
-                <td style="width: 30%"> <div *ngFor="let author of order.book.authors">{{author.name}}</div></td>
+                <td style="width: 30%">
+                  <div *ngFor="let author of order.book.authors">{{author.name}}</div>
+                </td>
                 <td>{{order.orderDate}}</td>
                 <td class="center">{{order.dateOfIssue}}</td>
                 <td class="center">{{order.returnDate}}</td>
                 <td class="center">{{order.status}}</td>
-                <td class="center" (click)="toIssue(order)" *ngIf="order.status == 'Замовленно'"><button type="submit" class="btn btn-danger" >To Issue</button></td>
+                <td class="center" *ngIf="order.status == 'Замовленно'">
+                  <button (click)="toIssue(order)" type="submit" class="btn btn-danger">To Issue</button>
+                </td>
               </tr>
               </tbody>
             </table>
             <div class="d-flex justify-content-between p-2">
               <ngb-pagination
                 [collectionSize]="orders.totalItem" [(page)]='orders.page'
-                [pageSize]="searchParameter.pageSize" [maxSize]="15" [boundaryLinks]="true" (pageChange)="setPage('order')">
+                [pageSize]="searchParameter.pageSize" [maxSize]="15" [boundaryLinks]="true"
+                (pageChange)="setPage('order')">
               </ngb-pagination>
             </div>
           </div>

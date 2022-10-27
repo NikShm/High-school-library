@@ -67,7 +67,7 @@ export class UserService {
         this.user.role = data.role
         this.user.isLogIn = true
         localStorage.setItem("user", JSON.stringify(this.user))
-        this.router.navigate(["user/"+this.user.id])
+        this.router.navigate(["my-page/"+this.user.id])
       }else {
         window.alert("You entered the wrong login or password")
       }

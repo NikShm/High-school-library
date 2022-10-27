@@ -24,4 +24,12 @@ export class PenaltyService {
       return new Page(data.content, data.totalItem);
     }));
   }
+
+  pay(id:number, idPenalty:string){
+    return this.http.get(GlobalConstants.apiURL +'/api/penalty/'+id+ "/" +idPenalty);
+  }
+
+  create(penalty:any){
+    return this.http.post(GlobalConstants.apiURL +'/api/penalty/create', penalty);
+  }
 }

@@ -7,6 +7,9 @@ import {FormsModule} from "@angular/forms";
 import {BooksComponent} from "./books/books.component";
 import {AuthorComponent} from "./author/author.component";
 import {MyPageComponent} from "./my-page/my-page.component";
+import {CreateStudentPageComponent} from "./create-student-page/create-student-page.component";
+import {CreateLibrarianPageComponent} from "./create-librarian-page/create-librarian-page.component";
+import {CreateTeacherPageComponent} from "./create-teacher-page/create-teacher-page.component";
 
 
 const routes: Routes = [
@@ -16,6 +19,9 @@ const routes: Routes = [
   {path: 'user/:id', component: UserPageComponent},
   {path: 'my-page/:id', component: MyPageComponent},
   {path: 'author/:id', component: AuthorComponent},
+  {path: 'create-student', component: CreateStudentPageComponent},
+  {path: 'create-teacher', component: CreateTeacherPageComponent},
+  {path: 'create-librarian', component: CreateLibrarianPageComponent},
   { path: '**', redirectTo: '/404' }
 ];
 

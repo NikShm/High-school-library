@@ -6,11 +6,16 @@ import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
 import com.HighSchoolLibrary.dto.search.PenaltySearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
-import com.HighSchoolLibrary.dto.search.SearchPattern;
+import com.HighSchoolLibrary.entities.Book;
 import com.HighSchoolLibrary.entities.Order;
 import com.HighSchoolLibrary.entities.Penalty;
+import com.HighSchoolLibrary.entities.users.User;
 import com.HighSchoolLibrary.enums.SortDirection;
+import com.HighSchoolLibrary.exceptions.DatabaseFetchException;
 import com.HighSchoolLibrary.mappers.PenaltyMapper;
+import com.HighSchoolLibrary.repositoriesJPA.BookRepository;
+import com.HighSchoolLibrary.repositoriesJPA.UsersRepository;
+import com.HighSchoolLibrary.repositoriesMongo.PenaltyRepository;
 import com.HighSchoolLibrary.services.PenaltyService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +27,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,10 +45,16 @@ public class PenaltyServiceImpl implements PenaltyService {
 
     private final PenaltyMapper mapper;
     private final MongoTemplate mongoTemplate;
+    private final PenaltyRepository penaltyRepository;
+    private final BookRepository bookRepository;
+    private final UsersRepository usersRepository;
 
-    public PenaltyServiceImpl(PenaltyMapper mapper, MongoTemplate mongoTemplate) {
+    public PenaltyServiceImpl(PenaltyMapper mapper, MongoTemplate mongoTemplate, PenaltyRepository penaltyRepository, BookRepository bookRepository, UsersRepository usersRepository) {
         this.mapper = mapper;
         this.mongoTemplate = mongoTemplate;
+        this.penaltyRepository = penaltyRepository;
+        this.bookRepository = bookRepository;
+        this.usersRepository = usersRepository;
     }
 
     @Override
@@ -67,15 +79,49 @@ public class PenaltyServiceImpl implements PenaltyService {
     @Override
     public List<BookMap> getCount(List<Integer> ids) {
         Aggregation agg = newAggregation(
-                match(Criteria.where("id_book").in(ids).and("description").is("Загубив книжку")),
+                match(Criteria.where("id_book").in(ids).and("description").regex("Спортив книжку")),
                 group("id_book").count().as("count"),
                 project("count").and("id_book").previousOperation()
 
         );
         AggregationResults<BookMap> groupResults
-                = mongoTemplate.aggregate(agg, Order.class, BookMap.class);
+                = mongoTemplate.aggregate(agg, Penalty.class, BookMap.class);
         List<BookMap> result = groupResults.getMappedResults();
         System.out.println(result);
         return result;
+    }
+
+    @Override
+    public void pay(String idPenalty){
+        Penalty penalty =  penaltyRepository.findById(idPenalty)
+                .orElseThrow(() -> new DatabaseFetchException(Integer.parseInt(idPenalty), Order.class.getSimpleName()));
+        penalty.setStatus("Оплачено");
+        penaltyRepository.save(penalty);
+    }
+
+    @Override
+    public void create(PenaltyDTO penaltyDTO){
+        User user = usersRepository.
+                findById(penaltyDTO.getIdPenaltyKicker())
+                .orElseThrow(() -> new DatabaseFetchException(penaltyDTO.getIdPenaltyKicker(), User.class.getSimpleName()));
+        Book book = bookRepository.
+                findById(penaltyDTO.getIdBook())
+                .orElseThrow(() -> new DatabaseFetchException(penaltyDTO.getIdBook(), Book.class.getSimpleName()));
+        if (book.getCount() > penaltyRepository.findAllByIdBook(penaltyDTO.getIdBook()).size()) {
+            Penalty penalty = new Penalty();
+            switch (user.getType()) {
+                case "Student" -> penalty.setPrice(book.getPrice() * 2);
+                case "Teacher" -> penalty.setPrice(book.getPrice() * 3);
+                case "Administrator" -> penalty.setPrice(book.getPrice() * 4);
+                case "Librarian" -> penalty.setPrice(book.getPrice() * 5);
+            }
+            penalty.setIdBook(penaltyDTO.getIdBook());
+            penalty.setIdPenaltyKicker(penaltyDTO.getIdPenaltyKicker());
+            penalty.setIdAccuser(penaltyDTO.getIdAccuser());
+            penalty.setCurrency("UAH");
+            penalty.setDescription(penaltyDTO.getDescription());
+            penalty.setStatus("Неоплачено");
+            penaltyRepository.save(penalty);
+        }
     }
 }
