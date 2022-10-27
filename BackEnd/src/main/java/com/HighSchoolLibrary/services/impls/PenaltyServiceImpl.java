@@ -1,6 +1,7 @@
 package com.HighSchoolLibrary.services.impls;
 
 
+import com.HighSchoolLibrary.dto.BookDTO;
 import com.HighSchoolLibrary.dto.BookMap;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
@@ -27,7 +28,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,13 +49,15 @@ public class PenaltyServiceImpl implements PenaltyService {
     private final PenaltyRepository penaltyRepository;
     private final BookRepository bookRepository;
     private final UsersRepository usersRepository;
+    private final OrderServiceImpl orderService;
 
-    public PenaltyServiceImpl(PenaltyMapper mapper, MongoTemplate mongoTemplate, PenaltyRepository penaltyRepository, BookRepository bookRepository, UsersRepository usersRepository) {
+    public PenaltyServiceImpl(PenaltyMapper mapper, MongoTemplate mongoTemplate, PenaltyRepository penaltyRepository, BookRepository bookRepository, UsersRepository usersRepository, OrderServiceImpl orderService) {
         this.mapper = mapper;
         this.mongoTemplate = mongoTemplate;
         this.penaltyRepository = penaltyRepository;
         this.bookRepository = bookRepository;
         this.usersRepository = usersRepository;
+        this.orderService = orderService;
     }
 
     @Override
@@ -79,7 +82,8 @@ public class PenaltyServiceImpl implements PenaltyService {
     @Override
     public List<BookMap> getCount(List<Integer> ids) {
         Aggregation agg = newAggregation(
-                match(Criteria.where("id_book").in(ids).and("description").regex("Спортив книжку")),
+                match(Criteria.where("id_book").in(ids).orOperator(new Criteria().and("description").regex("Спортив книжку"),
+                        new Criteria().and("description").regex("Загубив книжку"))),
                 group("id_book").count().as("count"),
                 project("count").and("id_book").previousOperation()
 
@@ -107,7 +111,12 @@ public class PenaltyServiceImpl implements PenaltyService {
         Book book = bookRepository.
                 findById(penaltyDTO.getIdBook())
                 .orElseThrow(() -> new DatabaseFetchException(penaltyDTO.getIdBook(), Book.class.getSimpleName()));
-        if (book.getCount() > penaltyRepository.findAllByIdBook(penaltyDTO.getIdBook()).size()) {
+        List<Integer> ids = new ArrayList<>();
+        ids.add(book.getId());
+        List<BookMap> countsOrder = orderService.getCount(ids);
+        List<BookMap> countsPenalty = getCount(ids);
+        book.setCount(book.getCount() - countsOrder.get(0).getCount() - countsPenalty.get(0).getCount());
+        if (book.getCount() > 0) {
             Penalty penalty = new Penalty();
             switch (user.getType()) {
                 case "Student" -> penalty.setPrice(book.getPrice() * 2);

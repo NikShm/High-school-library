@@ -91,7 +91,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<BookMap> getCount(List<Integer> ids) {
         Aggregation agg = newAggregation(
-                match(Criteria.where("id_book").in(ids).and("status").is("Здано")),
+                match(Criteria.where("id_book").in(ids).orOperator(new Criteria().and("status").is("Запізнення"),
+                        new Criteria().in(ids).and("status").is("Взято"))),
                 group("id_book").count().as("count"),
                 project("count").and("id_book").previousOperation(),
                 sort(Sort.Direction.DESC, "id_book")
@@ -115,7 +116,6 @@ public class OrderServiceImpl implements OrderService {
         List<Order> order = orderRepository.findAllByIdUserAndIdBookAndStatus(orderDTO.getIdUser(),orderDTO.getBook().getId(), "Замовленно");
         if(order.isEmpty()) {
             ZoneId zid = ZoneId.of("Europe/Kiev");
-            ;
             orderDTO.setOrderDate(LocalDateTime.now(zid));
             orderDTO.setStatus("Замовленно");
             orderRepository.save(mapper.toEntity(orderDTO));
