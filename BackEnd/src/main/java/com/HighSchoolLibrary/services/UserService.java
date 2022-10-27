@@ -9,7 +9,7 @@ package com.HighSchoolLibrary.services;/*
 import com.HighSchoolLibrary.dto.LogInDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
-import com.HighSchoolLibrary.dto.UserDTO;
+import com.HighSchoolLibrary.dto.usersDTO.UserDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
 
 import java.io.IOException;

@@ -1,6 +1,6 @@
-package com.HighSchoolLibrary.entities;
+package com.HighSchoolLibrary.entities.users;
 
-import com.HighSchoolLibrary.dto.UserDTO;
+import com.HighSchoolLibrary.dto.usersDTO.UserDTO;
 import com.HighSchoolLibrary.enums.RoleType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.vladmihalcea.hibernate.type.basic.PostgreSQLEnumType;

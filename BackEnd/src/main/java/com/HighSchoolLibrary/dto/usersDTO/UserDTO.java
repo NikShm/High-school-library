@@ -1,14 +1,12 @@
-package com.HighSchoolLibrary.dto;
+package com.HighSchoolLibrary.dto.usersDTO;
 
 
-import com.HighSchoolLibrary.entities.Student;
-import com.HighSchoolLibrary.entities.Teacher;
-import com.HighSchoolLibrary.entities.User;
+import com.HighSchoolLibrary.entities.users.Student;
+import com.HighSchoolLibrary.entities.users.Teacher;
+import com.HighSchoolLibrary.entities.users.User;
 import com.HighSchoolLibrary.enums.RoleType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-
-import java.time.LocalDateTime;
 
 /*
 @author Микола

@@ -2,9 +2,12 @@ package com.HighSchoolLibrary.controller;
 
 
 import com.HighSchoolLibrary.dto.*;
+import com.HighSchoolLibrary.dto.usersDTO.StudentDTO;
+import com.HighSchoolLibrary.dto.usersDTO.TeacherDTO;
+import com.HighSchoolLibrary.dto.usersDTO.UserDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
-import com.HighSchoolLibrary.entities.User;
+import com.HighSchoolLibrary.entities.users.User;
 import com.HighSchoolLibrary.mappers.AuthorMapper;
 import com.HighSchoolLibrary.repositoriesJPA.AuthorRepository;
 import com.HighSchoolLibrary.services.impls.UserServiceImpl;

@@ -1,8 +1,7 @@
-package com.HighSchoolLibrary.entities;
+package com.HighSchoolLibrary.entities.users;
 
 
-import com.HighSchoolLibrary.dto.TeacherDTO;
-import com.HighSchoolLibrary.dto.UserDTO;
+import com.HighSchoolLibrary.dto.usersDTO.TeacherDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 

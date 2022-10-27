@@ -32,4 +32,15 @@ public class OrderMapper {
         dto.setBook(repository.findAllById(order.getIdBook()).stream().map(mapper::toDto).toList().get(0));
         return dto;
     }
+
+    public Order toEntity(OrderDTO orderDTO) {
+        Order entity = new Order();
+        entity.setIdUser(orderDTO.getIdUser());
+        entity.setDateOfIssue(orderDTO.getDateOfIssue());
+        entity.setIdBook(orderDTO.getBook().getId());
+        entity.setOrderDate(orderDTO.getOrderDate());
+        entity.setReturnDate(orderDTO.getReturnDate());
+        entity.setStatus(orderDTO.getStatus());
+        return entity;
+    }
 }

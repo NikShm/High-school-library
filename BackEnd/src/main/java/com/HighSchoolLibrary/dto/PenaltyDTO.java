@@ -19,6 +19,10 @@ public class PenaltyDTO {
     private String status;
     private Integer idAccuser;
     private Integer idPenaltyKicker;
+    private Integer idBook;
+
+    public PenaltyDTO() {
+    }
 
     public PenaltyDTO(Penalty penalty) {
         this.id = penalty.getId();
@@ -28,6 +32,7 @@ public class PenaltyDTO {
         this.status = penalty.getStatus();
         this.idAccuser = penalty.getIdAccuser();
         this.idPenaltyKicker = penalty.getIdPenaltyKicker();
+        this.idBook = penalty.getIdBook();
     }
 
     public String getId() {
@@ -84,5 +89,13 @@ public class PenaltyDTO {
 
     public void setIdPenaltyKicker(Integer idPenaltyKicker) {
         this.idPenaltyKicker = idPenaltyKicker;
+    }
+
+    public Integer getIdBook() {
+        return idBook;
+    }
+
+    public void setIdBook(Integer idBook) {
+        this.idBook = idBook;
     }
 }

@@ -5,9 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication//(exclude = {DataSourceAutoConfiguration.class })
 @PropertySource("classpath:application.properties")
+@EnableScheduling
 public class HighSchoolLibraryApplication {
 
 	public static void main(String[] args) {

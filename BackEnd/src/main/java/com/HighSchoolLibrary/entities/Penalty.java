@@ -29,6 +29,8 @@ public class Penalty {
     private Integer idAccuser;
     @Field(value = "id_penalty_kicker")
     private Integer idPenaltyKicker;
+    @Field(value = "id_book")
+    private Integer idBook;
     public void setId(String id) {
         this.id = id;
     }
@@ -83,5 +85,13 @@ public class Penalty {
 
     public void setIdPenaltyKicker(Integer idPenaltyKicker) {
         this.idPenaltyKicker = idPenaltyKicker;
+    }
+
+    public Integer getIdBook() {
+        return idBook;
+    }
+
+    public void setIdBook(Integer idBook) {
+        this.idBook = idBook;
     }
 }

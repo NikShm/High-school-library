@@ -1,12 +1,8 @@
 package com.HighSchoolLibrary.mappers;
 
 import com.HighSchoolLibrary.dto.LogInDTO;
-import com.HighSchoolLibrary.dto.StudentDTO;
-import com.HighSchoolLibrary.dto.TeacherDTO;
-import com.HighSchoolLibrary.dto.UserDTO;
-import com.HighSchoolLibrary.entities.Student;
-import com.HighSchoolLibrary.entities.Teacher;
-import com.HighSchoolLibrary.entities.User;
+import com.HighSchoolLibrary.dto.usersDTO.*;
+import com.HighSchoolLibrary.entities.users.*;
 import org.springframework.stereotype.Component;
 
 
@@ -25,6 +21,8 @@ public class UserMapper {
         switch (user.getType()) {
             case ("Student") -> userDTO = new StudentDTO((Student) user);
             case ("Teacher") -> userDTO = new TeacherDTO((Teacher) user);
+            case ("Administrator") -> userDTO = new AdministratorDTO((Administrator) user);
+            case ("Librarian") -> userDTO = new LibrarianDTO((Librarian) user);
         }
         return userDTO;
     }
@@ -34,6 +32,8 @@ public class UserMapper {
         switch (dto.getType()) {
             case "Student" -> user = new Student((StudentDTO) dto);
             case "Teacher" -> user = new Teacher((TeacherDTO) dto);
+            case ("Administrator") -> user = new Administrator((AdministratorDTO) dto);
+            case ("Librarian") -> user = new Librarian((LibrarianDTO) dto);
         }
         return user;
     }

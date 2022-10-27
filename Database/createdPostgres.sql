@@ -7,7 +7,7 @@ DROP TYPE IF EXISTS category, userRole;
 
 CREATE TYPE category AS ENUM ('Науково-Популярна');
 
-CREATE TYPE userRole AS ENUM ('USER', 'OPERATOR');
+CREATE TYPE userRole AS ENUM ('USER', 'OPERATOR','ADMIN');
 
 CREATE TABLE author
 (
@@ -60,5 +60,16 @@ CREATE TABLE teacher
     cathedra VARCHAR(128) NOT NULL,
     degree VARCHAR(32) NOT NULL,
     rank VARCHAR(128) NOT NULL
+);
+CREATE TABLE librarian
+(
+    id INTEGER REFERENCES users(id) NOT NULL,
+    position VARCHAR(128) NOT NULL
+
+);
+CREATE TABLE administrator
+(
+    id INTEGER REFERENCES users(id) NOT NULL,
+    degree VARCHAR(32) NOT NULL
 );
 
