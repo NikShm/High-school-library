@@ -38,6 +38,19 @@ export class UserService {
     }));
   }
 
+  createStudent(id:any, user: any){
+    console.log(user)
+    this.http.post(GlobalConstants.apiURL +'/api/users/create-student/' + id, user).subscribe();
+  }
+  createTeacher(id:any,user: any){
+    console.log(user)
+    this.http.post(GlobalConstants.apiURL +'/api/users/create-teacher/' + id, user).subscribe();
+  }
+  createLibrarian(id:any,user: any){
+    console.log(user)
+    this.http.post(GlobalConstants.apiURL +'/api/users/create-librarian/' + id, user).subscribe();
+  }
+
   static setUser(user:any):any{
     switch (user.type) {
       case "Student": {

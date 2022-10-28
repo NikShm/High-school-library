@@ -62,8 +62,7 @@ public abstract class User {
         this.login = dto.getLogin();
         this.password = dto.getPassword();
         this.type = dto.getType();
-        this.createdAt = LocalDateTime.parse(dto.getCreatedAt(),
-                DateTimeFormatter.ofPattern("yyyy-MM-dd H:mm:ss[.SSSSSS]"));
+        this.createdAt = LocalDateTime.now();
 
     }
 

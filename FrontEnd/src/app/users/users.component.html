@@ -36,6 +36,17 @@
                     <button ngbDropdownItem (click)="setPageSize(6)">6 items per page</button>
                   </div>
                 </div>
+                <div class="col" *ngIf="localStorage.isLogIn && localStorage.role == 'ADMIN'">
+                  <div ngbDropdown class="d-inline-block">
+                    <button type="button" class="btn btn-outline-primary"  ngbDropdownToggle>Create User
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                      <button ngbDropdownItem routerLink="/create-student">Student</button>
+                      <button ngbDropdownItem routerLink="/create-teacher">Teacher</button>
+                      <button ngbDropdownItem routerLink="/create-librarian">Librarian</button>
+                    </div>
+                  </div>
+                </div>
               </div>
               <table class="table table-striped" id="dataTables-example" >
                 <thead>

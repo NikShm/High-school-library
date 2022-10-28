@@ -17,6 +17,7 @@ export class UsersComponent implements OnInit {
   page:Page = new Page([],0);
   searchParameter = new Search("id","ASC",0,2)
   searchPattern = {search:"",role:JSON.parse(localStorage.getItem("user")!).role}
+  localStorage = JSON.parse(localStorage.getItem("user")!);
 
 
   constructor(private userService:UserService,private location: Location) { }

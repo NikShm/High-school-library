@@ -5,12 +5,18 @@ import com.HighSchoolLibrary.dto.LogInDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.UserSearch;
+import com.HighSchoolLibrary.dto.usersDTO.LibrarianDTO;
+import com.HighSchoolLibrary.dto.usersDTO.StudentDTO;
+import com.HighSchoolLibrary.dto.usersDTO.TeacherDTO;
 import com.HighSchoolLibrary.dto.usersDTO.UserDTO;
-import com.HighSchoolLibrary.dto.search.SearchPattern;
+import com.HighSchoolLibrary.entities.users.Librarian;
+import com.HighSchoolLibrary.entities.users.Student;
+import com.HighSchoolLibrary.entities.users.Teacher;
 import com.HighSchoolLibrary.entities.users.User;
 import com.HighSchoolLibrary.enums.RoleType;
 import com.HighSchoolLibrary.exceptions.DatabaseFetchException;
 import com.HighSchoolLibrary.mappers.UserMapper;
+import com.HighSchoolLibrary.repositoriesJPA.StudentRepository;
 import com.HighSchoolLibrary.repositoriesJPA.UsersRepository;
 import com.HighSchoolLibrary.services.UserService;
 import com.HighSchoolLibrary.utils.QueryHelper;
@@ -18,7 +24,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -40,10 +48,14 @@ public class UserServiceImpl implements UserService {
 
     private final UsersRepository repository;
     private final UserMapper mapper;
+    private final StudentRepository studentRepository;
+    private final EntityManager entityManager;
 
-    public UserServiceImpl(UsersRepository repository, UserMapper mapper) {
+    public UserServiceImpl(UsersRepository repository, UserMapper mapper, StudentRepository studentRepository, EntityManager entityManager) {
         this.repository = repository;
         this.mapper = mapper;
+        this.studentRepository = studentRepository;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -100,9 +112,69 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer create(UserDTO dto) {
-        User updatedUser = mapper.toEntity(dto);
-        return repository.save(updatedUser).getId();
+    @Transactional
+    public Integer createStudent(StudentDTO dto) {
+        String INSERT_USER = "insert into users(name, surname, role, login, password, type)\n" +
+                "values (?1, ?2, ?3, ?4, ?5, ?6);";
+        entityManager.createNativeQuery(INSERT_USER).setParameter(1, dto.getName())
+                .setParameter(2, dto.getSurname())
+                .setParameter(3, RoleType.USER.toString())
+                .setParameter(4, dto.getLogin())
+                .setParameter(5, dto.getPassword())
+                .setParameter(6, dto.getType())
+                .executeUpdate();
+        dto.setId((Integer) entityManager.createNativeQuery("select id from  users ORDER By id DESC").getResultList().get(0));
+        String INSERT_STUDENTS = "insert into student(id, faculty, \"group\", subgroup)\n" +
+                "values (?1, ?2, ?3, ?4);";
+        entityManager.createNativeQuery(INSERT_STUDENTS).setParameter(1, dto.getId())
+                .setParameter(2, dto.getFaculty())
+                .setParameter(3, dto.getGroup())
+                .setParameter(4, dto.getSubgroup())
+                .executeUpdate();
+        return 1;
+    }
+    @Override
+    @Transactional
+    public Integer createTeacher(TeacherDTO dto) {
+        String INSERT_USER = "insert into users(name, surname, role, login, password, type)\n" +
+                "values (?1, ?2, ?3, ?4, ?5, ?6);";
+        entityManager.createNativeQuery(INSERT_USER).setParameter(1, dto.getName())
+                .setParameter(2, dto.getSurname())
+                .setParameter(3, RoleType.USER.toString())
+                .setParameter(4, dto.getLogin())
+                .setParameter(5, dto.getPassword())
+                .setParameter(6, dto.getType())
+                .executeUpdate();
+        dto.setId((Integer) entityManager.createNativeQuery("select id from  users ORDER By id DESC").getResultList().get(0));
+        String INSERT_STUDENTS = "insert into teacher(id, cathedra, degree, rank)\n" +
+                "values (?1, ?2, ?3, ?4);";
+        entityManager.createNativeQuery(INSERT_STUDENTS).setParameter(1, dto.getId())
+                .setParameter(2, dto.getRank())
+                .setParameter(3, dto.getCathedra())
+                .setParameter(4, dto.getRank())
+                .executeUpdate();
+        return 1;
+    }
+    @Override
+    @Transactional
+    public Integer createLibrarian(LibrarianDTO dto) {
+        String INSERT_USER = "insert into users(name, surname, role, login, password, type)\n" +
+                "values (?1, ?2, ?3, ?4, ?5, ?6);";
+        entityManager.createNativeQuery(INSERT_USER).setParameter(1, dto.getName())
+                .setParameter(2, dto.getSurname())
+                .setParameter(3, RoleType.USER.toString())
+                .setParameter(4, dto.getLogin())
+                .setParameter(5, dto.getPassword())
+                .setParameter(6, dto.getType())
+                .executeUpdate();
+        System.out.println(entityManager.createNativeQuery("select id from  users ORDER By id DESC").getResultList());
+        dto.setId((Integer) entityManager.createNativeQuery("select id from  users ORDER By id DESC").getResultList().get(0));
+        String INSERT_STUDENTS = "insert into librarian(id, position )\n" +
+                "values (?1, ?2);";
+        entityManager.createNativeQuery(INSERT_STUDENTS).setParameter(1, dto.getId())
+                .setParameter(2, dto.getPosition())
+                .executeUpdate();
+        return 1;
     }
 
     @Override

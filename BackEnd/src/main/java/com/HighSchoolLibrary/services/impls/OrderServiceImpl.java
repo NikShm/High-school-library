@@ -6,7 +6,6 @@ import com.HighSchoolLibrary.dto.OrderDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.search.OrderSearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
-import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.entities.Book;
 import com.HighSchoolLibrary.entities.Order;
 import com.HighSchoolLibrary.entities.Penalty;
@@ -21,7 +20,6 @@ import com.HighSchoolLibrary.repositoriesJPA.UsersRepository;
 import com.HighSchoolLibrary.repositoriesMongo.OrderRepository;
 import com.HighSchoolLibrary.repositoriesMongo.PenaltyRepository;
 import com.HighSchoolLibrary.services.OrderService;
-import io.swagger.models.auth.In;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -136,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
         if (order.getDateOfIssue() != null) {
             switch (user.getType()) {
                 case "Student" -> order.setReturnDate(order.getDateOfIssue().plusSeconds(20));
-                case "Teacher" -> order.setReturnDate(order.getDateOfIssue().plusSeconds(30));
+                case "Teacher" -> order.setReturnDate(order.getDateOfIssue().plusHours(30));
                 case "Administrator" -> order.setReturnDate(order.getDateOfIssue().plusSeconds(40));
                 case "Librarian" -> order.setReturnDate(order.getDateOfIssue().plusSeconds(35));
             }
@@ -176,5 +174,25 @@ public class OrderServiceImpl implements OrderService {
                 }
             }
         }).toList());
+    }
+
+    @Override
+    public void returningLate(String orderID){
+        Order order = orderRepository.findById(orderID)
+                .orElseThrow(() -> new DatabaseFetchException(Integer.parseInt(orderID), Order.class.getSimpleName()));
+        if (Objects.equals(order.getStatus(), "Запізнення")) {
+            order.setStatus("Зданно з запізненням");
+            orderRepository.save(order);
+        }
+    }
+
+    @Override
+    public void returning(String orderID){
+        Order order = orderRepository.findById(orderID)
+                .orElseThrow(() -> new DatabaseFetchException(Integer.parseInt(orderID), Order.class.getSimpleName()));
+        if (Objects.equals(order.getStatus(), "Взято")) {
+            order.setStatus("Зданно");
+            orderRepository.save(order);
+        }
     }
 }
