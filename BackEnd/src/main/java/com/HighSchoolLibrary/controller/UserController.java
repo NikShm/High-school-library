@@ -3,14 +3,17 @@ package com.HighSchoolLibrary.controller;
 
 import com.HighSchoolLibrary.dto.*;
 import com.HighSchoolLibrary.dto.search.UserSearch;
+import com.HighSchoolLibrary.dto.usersDTO.LibrarianDTO;
 import com.HighSchoolLibrary.dto.usersDTO.StudentDTO;
 import com.HighSchoolLibrary.dto.usersDTO.TeacherDTO;
 import com.HighSchoolLibrary.dto.usersDTO.UserDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
-import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.entities.users.User;
+import com.HighSchoolLibrary.enums.RoleType;
+import com.HighSchoolLibrary.exceptions.DatabaseFetchException;
 import com.HighSchoolLibrary.mappers.AuthorMapper;
 import com.HighSchoolLibrary.repositoriesJPA.AuthorRepository;
+import com.HighSchoolLibrary.repositoriesJPA.UsersRepository;
 import com.HighSchoolLibrary.services.impls.UserServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
@@ -37,11 +40,13 @@ public class UserController {
     private final UserServiceImpl service;
     private  final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
+    private final UsersRepository usersRepository;
 
-    public UserController(UserServiceImpl service, AuthorRepository authorRepository, AuthorMapper authorMapper) {
+    public UserController(UserServiceImpl service, AuthorRepository authorRepository, AuthorMapper authorMapper, UsersRepository usersRepository) {
         this.service = service;
         this.authorRepository = authorRepository;
         this.authorMapper = authorMapper;
+        this.usersRepository = usersRepository;
     }
 
     @ApiOperation(value = "View a page of users", response = PageDTO.class,
@@ -63,26 +68,47 @@ public class UserController {
     @ApiOperation(value = "Created student", response = Integer.class,
             notes = "Gets StudentDTO, and set it into database.",
             tags={ "created-user"})
-    @PostMapping("/create-student")
-    public Integer create(@RequestBody StudentDTO dto){
-//        LOGGER.info("userDTO(dto={})", dto);
-         return service.create(dto);
+    @PostMapping("/create-student/{id}")
+    public Integer create(@PathVariable("id") Integer id, @RequestBody StudentDTO dto){
+        User user = usersRepository.
+                findById(id)
+                .orElseThrow(() -> new DatabaseFetchException(id, User.class.getSimpleName()));
+        if (user.getRole().equals(RoleType.ADMIN)) {
+            return service.createStudent(dto);
+        }
+        return null;
     }
 
     @ApiOperation(value = "Created teacher", response = Integer.class,
             notes = "Gets TeacherDTO, and set it into database.",
             tags={ "created-user"})
-    @PostMapping("/create-teacher")
-    public Integer create(@RequestBody TeacherDTO dto){
-//        LOGGER.info("userDTO(dto={})", dto);
-        return service.create(dto);
+    @PostMapping("/create-teacher/{id}")
+    public Integer create(@PathVariable("id") Integer id, @RequestBody TeacherDTO dto){
+        User user = usersRepository.
+                findById(id)
+                .orElseThrow(() -> new DatabaseFetchException(id, User.class.getSimpleName()));
+        if (user.getRole().equals(RoleType.ADMIN)) {
+            return service.createTeacher(dto);
+        }
+        return null;
+    }
+
+    @PostMapping("/create-librarian/{id}")
+    public Integer create(@PathVariable("id") Integer id, @RequestBody LibrarianDTO dto){
+        User user = usersRepository.
+                findById(id)
+                .orElseThrow(() -> new DatabaseFetchException(id, User.class.getSimpleName()));
+        if (user.getRole().equals(RoleType.ADMIN)) {
+            return service.createLibrarian(dto);
+        }
+        return null;
     }
 
     @ApiOperation(value = "Update student", httpMethod = "PUT",
             notes = "Gets StudentDTO, and update it by id if it is where in data base.",
             tags={ "update-user"})
-    @PutMapping("/update-student")
-    public void update(@RequestBody StudentDTO dto) throws IOException {
+    @PutMapping("/update-student/{id}")
+    public void update(@PathVariable("id") Integer id,@RequestBody StudentDTO dto) throws IOException {
 //        LOGGER.info("userDTO(dto={})", dto);
         service.update(dto);
     }

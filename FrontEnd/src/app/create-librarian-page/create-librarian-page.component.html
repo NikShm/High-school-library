@@ -1,0 +1,61 @@
+<app-header></app-header>
+<div class="content-wrapper">
+  <div class="container">
+    <div class="row pad-botm">
+      <div class="col-md-12">
+        <h4 class="header-line">{{user.name}} {{user.surname}}</h4>
+
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            INFO
+          </div>
+          <div class="panel-body">
+            <form role="form">
+              <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" type="text" [value]="librarian.name" (change)="setName($event)" required/>
+              </div>
+              <div class="form-group">
+                <label>Surname</label>
+                <input class="form-control" type="text" [value]="librarian.surname" (change)="setSurname($event)"/>
+              </div>
+              <div class="form-group">
+                <label>Login</label>
+                <input class="form-control" type="text" [value]="librarian.login" (change)="setLogin($event)"/>
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input class="form-control" type="text" [value]="librarian.password" (change)="setPassword($event)"/>
+              </div>
+              <td class="center">
+                <button (click)="createLibrarian()" type="submit" class="btn btn-danger">Create</button>
+              </td>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            Librarian
+          </div>
+          <div class="panel-body">
+            <form role="form">
+              <div class="form-group">
+                <label>Position</label>
+                <input class="form-control" (change)="setPosition($event)" type="text" [value]="librarian.position" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.ROW-->
+  </div>
+</div>
+<app-footer></app-footer>

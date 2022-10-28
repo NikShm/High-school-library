@@ -1,0 +1,70 @@
+<app-header></app-header>
+<div class="content-wrapper">
+  <div class="container">
+    <div class="row pad-botm">
+      <div class="col-md-12">
+        <h4 class="header-line">{{user.name}} {{user.surname}}</h4>
+
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            INFO
+          </div>
+          <div class="panel-body">
+            <form role="form">
+              <div class="form-group">
+                <label>Name</label>
+                <input class="form-control" type="text" [value]="user.name" (change)="setName($event)" required/>
+              </div>
+              <div class="form-group">
+                <label>Surname</label>
+                <input class="form-control" type="text" [value]="user.surname" (change)="setSurname($event)"/>
+              </div>
+              <div class="form-group">
+                <label>Login</label>
+                <input class="form-control" type="text" [value]="user.login" (change)="setLogin($event)"/>
+              </div>
+              <div class="form-group">
+                <label>Password</label>
+                <input class="form-control" type="text" [value]="user.password" (change)="setPassword($event)"/>
+              </div>
+              <td class="center">
+                <button (click)="createTeacher()" type="submit" class="btn btn-danger">Create</button>
+              </td>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6 col-xs-12">
+        <div class="panel panel-danger">
+          <div class="panel-heading">
+            {{user.type}}
+          </div>
+          <div class="panel-body">
+            <form role="form">
+
+              <div class="form-group">
+                <label>Cathedra</label>
+                <input class="form-control" type="text" (change)="setCathedra($event)" [value]="user.cathedra" />
+              </div>
+              <div class="form-group">
+                <label>Degree</label>
+                <input class="form-control" type="text" (change)="setDegree($event)" [value]="user.degree" />
+              </div>
+              <div class="form-group">
+                <label>Rank</label>
+                <input class="form-control" type="text" (change)="setRank($event)" [value]="user.rank" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/.ROW-->
+  </div>
+</div>
+<app-footer></app-footer>

@@ -10,8 +10,12 @@ import com.HighSchoolLibrary.dto.LogInDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
 import com.HighSchoolLibrary.dto.search.UserSearch;
+import com.HighSchoolLibrary.dto.usersDTO.LibrarianDTO;
+import com.HighSchoolLibrary.dto.usersDTO.StudentDTO;
+import com.HighSchoolLibrary.dto.usersDTO.TeacherDTO;
 import com.HighSchoolLibrary.dto.usersDTO.UserDTO;
 import com.HighSchoolLibrary.dto.search.SearchPattern;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -28,7 +32,15 @@ public interface UserService {
 
     void delete(Integer id) throws IOException;
 
-    Integer create(UserDTO dto);
+
+    @Transactional
+    Integer createStudent(StudentDTO dto);
+
+    @Transactional
+    Integer createTeacher(TeacherDTO dto);
+
+    @Transactional
+    Integer createLibrarian(LibrarianDTO dto);
 
     LogInDTO authorize(String login, String password);
 }

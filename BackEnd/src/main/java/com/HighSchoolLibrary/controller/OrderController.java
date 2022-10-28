@@ -59,9 +59,29 @@ public class OrderController {
         }
     }
 
-    @PostMapping(value = "/abolition/{id}")
+    @PostMapping(value = "/куе/{id}")
     public void abolition(@PathVariable("id") Integer id, @RequestBody OrderDTO orderDTO) {
             orderService.abolition(id, orderDTO);
+    }
+
+    @RequestMapping(value = "/returning-late/{id}/{orderId}")
+    public void returningLate(@PathVariable("id") Integer id, @PathVariable("orderId") String orderId) {
+        User user = usersRepository.
+                findById(id)
+                .orElseThrow(() -> new DatabaseFetchException(id, User.class.getSimpleName()));
+        if (!user.getRole().equals(RoleType.USER)){
+            orderService.returningLate(orderId);
+        }
+    }
+
+    @RequestMapping(value = "/returning/{id}/{orderId}")
+    public void returning(@PathVariable("id") Integer id, @PathVariable("orderId") String orderId) {
+        User user = usersRepository.
+                findById(id)
+                .orElseThrow(() -> new DatabaseFetchException(id, User.class.getSimpleName()));
+        if (!user.getRole().equals(RoleType.USER)){
+            orderService.returning(orderId);
+        }
     }
 
 }

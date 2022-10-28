@@ -24,4 +24,8 @@ public interface OrderService {
     void toIssue(OrderDTO orderDTO);
 
     void abolition(Integer id,OrderDTO orderDTO);
+
+    void returningLate(String orderID);
+
+    void returning(String orderID);
 }

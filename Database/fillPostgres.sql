@@ -38,4 +38,5 @@ SELECT * FROM book Left
     JOIN book_author ba on book.id = ba.bookid
                         Left JOIN author a on ba.authorid = a.id where a.id = 1 ORDER BY book.id  limit 4 offset 0*4;
 
-SELECT * FROM book Left JOIN book_author ba on book.id = ba.bookid Left JOIN author a on ba.authorid = a.id where a.id = 2
+SELECT * FROM book Left JOIN book_author ba on book.id = ba.bookid Left JOIN author a on ba.authorid = a.id where a.id = 2;
+select id from  users ORDER By id DESC;

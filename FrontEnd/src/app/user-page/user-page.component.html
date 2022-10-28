@@ -192,6 +192,12 @@
                 <td class="center" *ngIf="order.status == 'Замовленно'">
                   <button (click)="toIssue(order)" type="submit" class="btn btn-danger">To Issue</button>
                 </td>
+                <td class="center" *ngIf="order.status == 'Запізнення'">
+                  <button (click)="returningLate(order.id)" type="submit" class="btn btn-danger">Return</button>
+                </td>
+                <td class="center" *ngIf="order.status == 'Взято'">
+                  <button (click)="returning(order.id)" type="submit" class="btn btn-danger">Return</button>
+                </td>
               </tr>
               </tbody>
             </table>

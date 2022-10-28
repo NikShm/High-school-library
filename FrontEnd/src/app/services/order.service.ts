@@ -35,4 +35,12 @@ export class OrderService {
   toIssue(id:number, order:any){
     return this.http.post(GlobalConstants.apiURL +'/api/order/to-issue/'+id, order);
   }
+
+  returningLate(id:any, orderId:any) {
+    return this.http.get(GlobalConstants.apiURL +'/api/order/returning-late/'+id +"/"+ orderId)
+  }
+
+  returning(id:any, orderId:any) {
+    return this.http.get(GlobalConstants.apiURL +'/api/order/returning/'+id +"/"+ orderId)
+  }
 }

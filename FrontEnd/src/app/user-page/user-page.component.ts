@@ -79,4 +79,16 @@ export class UserPageComponent implements OnInit {
       this.setPage("penalty")
     })
   }
+
+  returningLate(order: any) {
+    this.orderService.returningLate(this.id, order).subscribe(() => {
+      this.setPage("order")
+    })
+  }
+
+  returning(order: any) {
+    this.orderService.returning(this.id, order).subscribe(() => {
+      this.setPage("order")
+    })
+  }
 }
