@@ -26,7 +26,7 @@
         <div class="col-md-12">
           <div class="navbar-collapse collapse ">
             <ul id="menu-top" class="nav navbar-nav navbar-right">
-              <li><a routerLink="/users" >Users</a></li>
+              <li><a routerLink="/users" *ngIf="this.user.role != 'USER'">Users</a></li>
               <li><a routerLink="/books" >Books</a></li>
               <li><a routerLink="/my-page/{{id}}" >My Page</a></li>
 

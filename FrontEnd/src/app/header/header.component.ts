@@ -21,5 +21,6 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = JSON.parse(localStorage.getItem("user")!).id;
+    this.user.role = JSON.parse(localStorage.getItem("user")!).role
   }
 }
