@@ -20,4 +20,11 @@ public class AuthorSearch {
     public void setSearch(String search) {
         this.search = search;
     }
+
+    @Override
+    public String toString() {
+        return "AuthorSearch{" +
+                "search='" + search + '\'' +
+                '}';
+    }
 }

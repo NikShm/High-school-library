@@ -182,7 +182,7 @@
                 <td class="center">{{order.dateOfIssue}}</td>
                 <td class="center">{{order.returnDate}}</td>
                 <td class="center">{{order.status}}</td>
-                <td class="center" (click)="abolition(order)" *ngIf="order.status == 'Замовленно'"><button type="submit" class="btn btn-danger" >Abolition</button></td>
+                <td class="center" (click)="abolition(order)" *ngIf="order.status == 'Замовленно'"><button type="submit" class="btn btn-danger" >Cansel</button></td>
               </tr>
               </tbody>
             </table>
@@ -214,10 +214,10 @@
                 <label>Тип штрафу</label>
                 <select class="form-control" [value]="penaltyCreate.description" (change)="setDescription($event)">
                   <option >Спортив книжку</option>
-                  <option>Спортив книжку(Загубив)</option>
+                  <option>Загубив книжку</option>
                 </select>
               </div>
-              <td class="center" (click)="toreTheBook()"><button type="submit" class="btn btn-danger" >Create</button></td>
+              <td class="center" (click)="createPenalty()"><button type="submit" class="btn btn-danger" >Create</button></td>
             </form>
           </div>
         </div>

@@ -28,4 +28,12 @@ public class BookSearch {
     public void setAuthorId(Integer authorId) {
         this.authorId = authorId;
     }
+
+    @Override
+    public String toString() {
+        return "BookSearch{" +
+                "search='" + search + '\'' +
+                ", authorId=" + authorId +
+                '}';
+    }
 }

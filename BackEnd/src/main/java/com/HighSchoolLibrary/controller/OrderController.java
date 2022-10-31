@@ -4,7 +4,6 @@ import com.HighSchoolLibrary.dto.OrderDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.search.OrderSearch;
 import com.HighSchoolLibrary.dto.search.SearchDTO;
-import com.HighSchoolLibrary.dto.search.SearchPattern;
 import com.HighSchoolLibrary.entities.users.User;
 import com.HighSchoolLibrary.enums.RoleType;
 import com.HighSchoolLibrary.exceptions.DatabaseFetchException;
@@ -14,8 +13,6 @@ import com.HighSchoolLibrary.services.impls.OrderServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Objects;
 
 
 /*
@@ -45,8 +42,8 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public void create(@RequestBody OrderDTO orderDTO) {
-        orderService.create(orderDTO);
+    public Boolean create(@RequestBody OrderDTO orderDTO) {
+        return orderService.create(orderDTO);
     }
 
     @RequestMapping(value = "/to-issue/{id}")
@@ -59,9 +56,9 @@ public class OrderController {
         }
     }
 
-    @PostMapping(value = "/куе/{id}")
-    public void abolition(@PathVariable("id") Integer id, @RequestBody OrderDTO orderDTO) {
-            orderService.abolition(id, orderDTO);
+    @PostMapping(value = "/cancel/{id}")
+    public void cancel(@PathVariable("id") Integer id, @RequestBody OrderDTO orderDTO) {
+            orderService.cancel(id, orderDTO);
     }
 
     @RequestMapping(value = "/returning-late/{id}/{orderId}")

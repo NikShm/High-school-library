@@ -15,7 +15,6 @@ import java.util.List;
 @since 05.09.2022 - 18.53
 */
 @Repository
-@EnableJpaRepositories("com.HighSchoolLibrary.repositoriesJPA")
 public interface BookRepository extends JpaRepository<Book, Integer>, JpaSpecificationExecutor<Book> {
     List<Book> findAllById(Integer id);
 }

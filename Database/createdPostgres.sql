@@ -5,8 +5,12 @@ DROP TABLE IF EXISTS  teacher,student, users, librarian, administrator;
 DROP TABLE IF EXISTS  book;
 DROP TYPE IF EXISTS category, userRole;
 
-CREATE TYPE category AS ENUM ('Науково-Популярна');
+CREATE TYPE category AS ENUM ('Programming','Fantasy');
 CREATE TYPE userRole AS ENUM ('NONE','USER', 'OPERATOR','ADMIN');
+
+drop type status_enum_old;
+
+ALTER TABLE book ALTER COLUMN category TYPE category USING category::text::category;
 
 CREATE TABLE author
 (
@@ -49,7 +53,7 @@ CREATE TABLE student
 (
     id INTEGER REFERENCES users(id) NOT NULL,
     faculty VARCHAR(128) NOT NULL,
-    "group" VARCHAR(32) NOT NULL,
+    class VARCHAR(32) NOT NULL,
     subgroup VARCHAR(32) NOT NULL
 );
 

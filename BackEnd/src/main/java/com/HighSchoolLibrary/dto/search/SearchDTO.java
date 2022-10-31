@@ -70,7 +70,7 @@ public class SearchDTO<T> {
                 ", sortDirection=" + sortDirection +
                 ", page=" + page +
                 ", pageSize=" + pageSize +
-                ", searchPattern=" + searchPattern +
+                ", searchPattern=" + searchPattern.toString() +
                 '}';
     }
 }

@@ -32,13 +32,11 @@ import java.util.Objects;
 public class BookServiceImpl implements BookService {
     private final EntityManager entityManager;
     private final OrderService orderService;
-    private final PenaltyServiceImpl penaltyService;
     private final BookMapper mapper;
 
-    public BookServiceImpl(EntityManager entityManager, OrderService orderService, PenaltyServiceImpl penaltyService, BookMapper mapper) {
+    public BookServiceImpl(EntityManager entityManager, OrderService orderService, BookMapper mapper) {
         this.entityManager = entityManager;
         this.orderService = orderService;
-        this.penaltyService = penaltyService;
         this.mapper = mapper;
     }
 
@@ -50,15 +48,8 @@ public class BookServiceImpl implements BookService {
         }
         List<Integer> ids = postDTOS.stream().map(BookDTO::getId).toList();
         List<BookMap> countsOrder = orderService.getCount(ids);
-        List<BookMap> countsPenalty = penaltyService.getCount(ids);
         postDTOS.forEach(book -> {
             for (BookMap bookMap : countsOrder) {
-                if (bookMap.getIdBook().equals(book.getId())) {
-                    book.setCount(book.getCount() - bookMap.getCount());
-                    break;
-                }
-            }
-            for (BookMap bookMap : countsPenalty) {
                 if (bookMap.getIdBook().equals(book.getId())) {
                     book.setCount(book.getCount() - bookMap.getCount());
                     break;
@@ -68,8 +59,7 @@ public class BookServiceImpl implements BookService {
         Page<BookDTO> page = new PageImpl<>(postDTOS);
         PageDTO<BookDTO> pageDTO = new PageDTO<>();
         pageDTO.setContent(page.getContent());
-        pageDTO.setTotalItem(((BigInteger) entityManager.createNativeQuery(getCountQuery(search.getSearchPattern()
-                .getAuthorId())).getSingleResult()).longValue());
+        pageDTO.setTotalItem(((BigInteger) entityManager.createNativeQuery(getCountQuery(search)).getSingleResult()).longValue());
         return pageDTO;
     }
 
@@ -106,13 +96,24 @@ public class BookServiceImpl implements BookService {
         return query.toString();
     }
 
-    private String getCountQuery(Integer authorId) {
+    private String getCountQuery(SearchDTO<BookSearch> search) {
         StringBuilder query = getQuery();
+        BookSearch searchPattern = search.getSearchPattern();
         query.append("SELECT count(*) FROM book");
-        if (authorId != null) {
-            query.append(" Left JOIN book_author ba on book.id = ba.bookid " +
-                    "Left JOIN author a on ba.authorid = a.id");
-            query.append(" where a.id = ").append(authorId);
+        if (searchPattern != null && searchPattern.getSearch() != null) {
+            if (searchPattern.getAuthorId() != null) {
+                query.append(" Left JOIN book_author ba on book.id = ba.bookid " +
+                        "Left JOIN author a on ba.authorid = a.id");
+            }
+            query.append(" where ");
+            if (!Objects.equals(searchPattern.getSearch(), "")) {
+                query.append("book.ts_description @@ phraseto_tsquery('english', '").append(searchPattern.getSearch()).append("')")
+                        .append(" or ");
+            }
+            query.append("book.name like '%").append(searchPattern.getSearch()).append("%'");
+            if (searchPattern.getAuthorId() != null) {
+                query.append(" and a.id = ").append(searchPattern.getAuthorId());
+            }
         }
         return query.toString();
     }

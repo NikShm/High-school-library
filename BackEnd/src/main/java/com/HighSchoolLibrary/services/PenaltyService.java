@@ -18,10 +18,10 @@ import java.util.List;
 public interface PenaltyService {
     PageDTO<PenaltyDTO> getAll(SearchDTO<PenaltySearch> search);
 
-    List<BookMap> getCount(List<Integer> ids);
-
     void pay(String idPenalty);
 
-    void create(PenaltyDTO penaltyDTO);
+    void cancel(Integer id, String penaltyId);
+
+    Boolean create(PenaltyDTO penaltyDTO);
 }
 

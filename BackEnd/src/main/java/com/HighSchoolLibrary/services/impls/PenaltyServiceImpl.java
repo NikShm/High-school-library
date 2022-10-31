@@ -1,7 +1,6 @@
 package com.HighSchoolLibrary.services.impls;
 
 
-import com.HighSchoolLibrary.dto.BookDTO;
 import com.HighSchoolLibrary.dto.BookMap;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
@@ -11,6 +10,7 @@ import com.HighSchoolLibrary.entities.Book;
 import com.HighSchoolLibrary.entities.Order;
 import com.HighSchoolLibrary.entities.Penalty;
 import com.HighSchoolLibrary.entities.users.User;
+import com.HighSchoolLibrary.enums.RoleType;
 import com.HighSchoolLibrary.enums.SortDirection;
 import com.HighSchoolLibrary.exceptions.DatabaseFetchException;
 import com.HighSchoolLibrary.mappers.PenaltyMapper;
@@ -22,17 +22,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
 
 /*
 @author Микола
@@ -50,14 +49,16 @@ public class PenaltyServiceImpl implements PenaltyService {
     private final BookRepository bookRepository;
     private final UsersRepository usersRepository;
     private final OrderServiceImpl orderService;
+    private final EntityManager entityManager;
 
-    public PenaltyServiceImpl(PenaltyMapper mapper, MongoTemplate mongoTemplate, PenaltyRepository penaltyRepository, BookRepository bookRepository, UsersRepository usersRepository, OrderServiceImpl orderService) {
+    public PenaltyServiceImpl(PenaltyMapper mapper, MongoTemplate mongoTemplate, PenaltyRepository penaltyRepository, BookRepository bookRepository, UsersRepository usersRepository, OrderServiceImpl orderService, EntityManager entityManager) {
         this.mapper = mapper;
         this.mongoTemplate = mongoTemplate;
         this.penaltyRepository = penaltyRepository;
         this.bookRepository = bookRepository;
         this.usersRepository = usersRepository;
         this.orderService = orderService;
+        this.entityManager = entityManager;
     }
 
     @Override
@@ -80,22 +81,6 @@ public class PenaltyServiceImpl implements PenaltyService {
     }
 
     @Override
-    public List<BookMap> getCount(List<Integer> ids) {
-        Aggregation agg = newAggregation(
-                match(Criteria.where("id_book").in(ids).orOperator(new Criteria().and("description").regex("Спортив книжку"),
-                        new Criteria().and("description").regex("Загубив книжку"))),
-                group("id_book").count().as("count"),
-                project("count").and("id_book").previousOperation()
-
-        );
-        AggregationResults<BookMap> groupResults
-                = mongoTemplate.aggregate(agg, Penalty.class, BookMap.class);
-        List<BookMap> result = groupResults.getMappedResults();
-        System.out.println(result);
-        return result;
-    }
-
-    @Override
     public void pay(String idPenalty){
         Penalty penalty =  penaltyRepository.findById(idPenalty)
                 .orElseThrow(() -> new DatabaseFetchException(Integer.parseInt(idPenalty), Order.class.getSimpleName()));
@@ -104,7 +89,18 @@ public class PenaltyServiceImpl implements PenaltyService {
     }
 
     @Override
-    public void create(PenaltyDTO penaltyDTO){
+    public void cancel(Integer id, String penaltyId) {
+        Penalty penalty = penaltyRepository.findById(penaltyId)
+                .orElseThrow(() -> new DatabaseFetchException(Integer.parseInt(penaltyId), Order.class.getSimpleName()));
+        if (Objects.equals(id, penalty.getIdPenaltyKicker()) && Objects.equals(penalty.getStatus(), "Замовленно")) {
+            penalty.setStatus("Відмінено");
+            penaltyRepository.save(penalty);
+        }
+    }
+
+    @Override
+    @Transactional
+    public Boolean create(PenaltyDTO penaltyDTO){
         User user = usersRepository.
                 findById(penaltyDTO.getIdPenaltyKicker())
                 .orElseThrow(() -> new DatabaseFetchException(penaltyDTO.getIdPenaltyKicker(), User.class.getSimpleName()));
@@ -114,8 +110,9 @@ public class PenaltyServiceImpl implements PenaltyService {
         List<Integer> ids = new ArrayList<>();
         ids.add(book.getId());
         List<BookMap> countsOrder = orderService.getCount(ids);
-        List<BookMap> countsPenalty = getCount(ids);
-        book.setCount(book.getCount() - countsOrder.get(0).getCount() - countsPenalty.get(0).getCount());
+        if (!countsOrder.isEmpty()){
+            book.setCount(book.getCount() - countsOrder.get(0).getCount());
+        }
         if (book.getCount() > 0) {
             Penalty penalty = new Penalty();
             switch (user.getType()) {
@@ -131,6 +128,14 @@ public class PenaltyServiceImpl implements PenaltyService {
             penalty.setDescription(penaltyDTO.getDescription());
             penalty.setStatus("Неоплачено");
             penaltyRepository.save(penalty);
+            book.setCount(book.getCount() - 1 + countsOrder.get(0).getCount());
+
+            bookRepository.save(book);
+//            entityManager.createNativeQuery("update book set count = ?1 where id = ?2").setParameter(1, book.getCount())
+//                    .setParameter(2, book.getId())
+//                    .executeUpdate();
+            return true;
         }
+        return false;
     }
 }

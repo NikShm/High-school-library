@@ -1,6 +1,8 @@
 package com.HighSchoolLibrary.entities;
 
+import com.HighSchoolLibrary.enums.CategoryType;
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -27,8 +29,10 @@ public class Book {
     private String description;
     @Column(name="price", nullable = false)
     private Integer price;
+    @Enumerated(EnumType.STRING)
+    @Type(type = "enum")
     @Column(name="category", nullable = false)
-    private String category;
+    private CategoryType category;
     @Column(name="count", nullable = false)
     private Integer count;
     @Column(name="createdat", nullable = false)
@@ -72,11 +76,11 @@ public class Book {
         this.price = price;
     }
 
-    public String getCategory() {
+    public CategoryType getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(CategoryType category) {
         this.category = category;
     }
 

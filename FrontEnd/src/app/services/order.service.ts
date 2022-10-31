@@ -26,10 +26,14 @@ export class OrderService {
   }
 
   setOrder(order: any){
-    this.http.post(GlobalConstants.apiURL +'/api/order/create', order).subscribe();
+    this.http.post(GlobalConstants.apiURL +'/api/order/create', order).subscribe((data:any) => {
+      if (data == true){
+        window.alert("Ви замовили " + order.book.name)
+      }
+    });
   }
   abolition(id:number, order:any){
-    return this.http.post(GlobalConstants.apiURL +'/api/order/abolition/'+id, order);
+    return this.http.post(GlobalConstants.apiURL +'/api/order/cancel/'+id, order);
   }
 
   toIssue(id:number, order:any){

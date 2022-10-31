@@ -19,4 +19,11 @@ public class PenaltySearch {
     public void setSearch(String search) {
         this.search = search;
     }
+
+    @Override
+    public String toString() {
+        return "PenaltySearch{" +
+                "search='" + search + '\'' +
+                '}';
+    }
 }

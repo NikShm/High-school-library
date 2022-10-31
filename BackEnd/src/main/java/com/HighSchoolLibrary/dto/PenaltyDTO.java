@@ -2,7 +2,6 @@ package com.HighSchoolLibrary.dto;
 
 
 import com.HighSchoolLibrary.entities.Penalty;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 /*
 @author Микола
@@ -32,7 +31,6 @@ public class PenaltyDTO {
         this.status = penalty.getStatus();
         this.idAccuser = penalty.getIdAccuser();
         this.idPenaltyKicker = penalty.getIdPenaltyKicker();
-        this.idBook = penalty.getIdBook();
     }
 
     public String getId() {

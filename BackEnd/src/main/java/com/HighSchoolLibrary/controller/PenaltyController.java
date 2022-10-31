@@ -1,7 +1,6 @@
 package com.HighSchoolLibrary.controller;
 
 
-import com.HighSchoolLibrary.dto.OrderDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
 import com.HighSchoolLibrary.dto.PenaltyDTO;
 import com.HighSchoolLibrary.dto.search.PenaltySearch;
@@ -42,22 +41,33 @@ public class PenaltyController {
     }
 
     @GetMapping("/{id}/{idPenalty}")
-    public void  pay(@PathVariable("id") Integer id, @PathVariable("idPenalty") String idPenalty){
+    public void pay(@PathVariable("id") Integer id, @PathVariable("idPenalty") String idPenalty) {
         User user = usersRepository.
                 findById(id)
                 .orElseThrow(() -> new DatabaseFetchException(id, User.class.getSimpleName()));
-        if (!user.getRole().equals(RoleType.USER)){
+        if (!user.getRole().equals(RoleType.USER)) {
             penaltyService.pay(idPenalty);
         }
     }
 
     @RequestMapping(value = "/create")
-    public void toIssue(@RequestBody PenaltyDTO penaltyDTO) {
+    public Boolean toIssue(@RequestBody PenaltyDTO penaltyDTO) {
         User user = usersRepository.
                 findById(penaltyDTO.getIdAccuser())
                 .orElseThrow(() -> new DatabaseFetchException(penaltyDTO.getIdAccuser(), User.class.getSimpleName()));
-        if (!user.getRole().equals(RoleType.USER)){
-            penaltyService.create(penaltyDTO);
+        if (!user.getRole().equals(RoleType.USER)) {
+            return penaltyService.create(penaltyDTO);
+        }
+        return false;
+    }
+
+    @PostMapping(value = "/cancel/{id}")
+    public void cancel(@PathVariable("id") Integer id, @RequestBody PenaltyDTO penaltyDTO) {
+        User user = usersRepository.
+                findById(id)
+                .orElseThrow(() -> new DatabaseFetchException(id, User.class.getSimpleName()));
+        if (!user.getRole().equals(RoleType.USER)) {
+            penaltyService.cancel(penaltyDTO.getIdPenaltyKicker(), penaltyDTO.getId());
         }
     }
 }

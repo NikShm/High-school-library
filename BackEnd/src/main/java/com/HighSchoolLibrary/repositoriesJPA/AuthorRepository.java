@@ -13,6 +13,5 @@ import org.springframework.stereotype.Repository;
 @since 05.09.2022 - 18.52
 */
 @Repository
-@EnableJpaRepositories("com.HighSchoolLibrary.repositoriesJPA")
 public interface AuthorRepository extends JpaRepository<Author, Integer>, JpaSpecificationExecutor<Author> {
 }

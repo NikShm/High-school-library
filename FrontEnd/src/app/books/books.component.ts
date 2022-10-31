@@ -56,6 +56,7 @@ export class BooksComponent implements OnInit {
   }
 
   search() {
+    console.log(this.searchParameter)
     this.booksService.getBooks(this.searchParameter).subscribe((data: any) => {
       this.page = data;
     })
@@ -64,5 +65,6 @@ export class BooksComponent implements OnInit {
   setOrder(id:number){
     this.order.book.id = id
     this.orderService.setOrder(this.order)
+    this.setPage()
   }
 }

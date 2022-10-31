@@ -39,6 +39,12 @@ export class UserPageComponent implements OnInit {
       }
       this.userService.getOneUser(params.get('id')).subscribe((data: any) => {
         this.user = UserService.setUser(data)
+        if (this.user == 'OPERATOR' && this.logIn.role != 'ADMIN') {
+          this.location.back();
+        }
+        if (this.user == 'ADMIN' && this.logIn.role != 'ADMIN') {
+          this.location.back();
+        }
         this.setPage("penalty")
         this.setPage("order")
       })

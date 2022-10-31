@@ -25,7 +25,7 @@ public class Student extends User {
     @Column(name="faculty", nullable = false)
     @ApiModelProperty(allowableValues = "128", value = "The faculty in which student study.", readOnly = true, dataType = "String")
     private String faculty;
-    @Column(name="group", length = 32, nullable = false)
+    @Column(name="class", length = 32, nullable = false)
     @ApiModelProperty(allowableValues = "32", value = "The group in which student study.", readOnly = true, dataType = "String")
     private String group;
     @Column(name="subgroup", length = 32, nullable = false)

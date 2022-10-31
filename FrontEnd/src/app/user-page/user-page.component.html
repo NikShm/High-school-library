@@ -139,8 +139,9 @@
                   <td>{{item.price}}</td>
                   <td>{{item.currency}}</td>
                   <td class="center">{{item.status}}</td>
-                  <td class="center" (click)="pay(item.id)" *ngIf="item.status == 'Неоплачено'">
-                    <button type="submit" class="btn btn-danger">Pay</button>
+                  <td class="center"  *ngIf="item.status == 'Неоплачено'">
+                    <button (click)="pay(item.id)" type="submit" class="btn btn-danger">Pay</button>
+                    <button type="submit" class="btn btn-danger">Cansel</button>
                   </td>
                 </tr>
                 </tbody>

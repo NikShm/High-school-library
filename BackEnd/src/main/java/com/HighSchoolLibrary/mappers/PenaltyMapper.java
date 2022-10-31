@@ -2,7 +2,10 @@ package com.HighSchoolLibrary.mappers;
 
 
 import com.HighSchoolLibrary.dto.PenaltyDTO;
+import com.HighSchoolLibrary.entities.Book;
 import com.HighSchoolLibrary.entities.Penalty;
+import com.HighSchoolLibrary.exceptions.DatabaseFetchException;
+import com.HighSchoolLibrary.repositoriesJPA.BookRepository;
 import org.springframework.stereotype.Component;
 
 /*

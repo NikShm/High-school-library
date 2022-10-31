@@ -2,6 +2,7 @@ package com.HighSchoolLibrary.dto;
 
 
 import com.HighSchoolLibrary.entities.Book;
+import com.HighSchoolLibrary.enums.CategoryType;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +20,7 @@ public class BookDTO {
     private String name;
     private String description;
     private Integer price;
-    private String category;
+    private CategoryType category;
     private Integer count;
     private LocalDateTime createdAt;
     private List<AuthorDTO> authorList;
@@ -69,11 +70,11 @@ public class BookDTO {
         this.price = price;
     }
 
-    public String getCategory() {
+    public CategoryType getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(CategoryType category) {
         this.category = category;
     }
 

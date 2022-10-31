@@ -6,13 +6,12 @@ package com.HighSchoolLibrary.repositoriesJPA;/*
 @since 28.10.2022 - 15.23
 */
 
+import com.HighSchoolLibrary.entities.users.Librarian;
 import com.HighSchoolLibrary.entities.users.Student;
-import com.HighSchoolLibrary.entities.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Integer>, JpaSpecificationExecutor<Student> {
+public interface LibrarianRepository extends JpaRepository<Librarian, Integer>, JpaSpecificationExecutor<Librarian> {
 }

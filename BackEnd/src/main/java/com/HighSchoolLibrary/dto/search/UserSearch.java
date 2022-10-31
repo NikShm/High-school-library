@@ -30,4 +30,12 @@ public class UserSearch {
     public void setRole(RoleType role) {
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "UserSearch{" +
+                "search='" + search + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

@@ -7,12 +7,11 @@ package com.HighSchoolLibrary.repositoriesJPA;/*
 */
 
 import com.HighSchoolLibrary.entities.users.Student;
-import com.HighSchoolLibrary.entities.users.User;
+import com.HighSchoolLibrary.entities.users.Teacher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Integer>, JpaSpecificationExecutor<Student> {
+public interface TeacherRepository extends JpaRepository<Teacher, Integer>, JpaSpecificationExecutor<Teacher> {
 }

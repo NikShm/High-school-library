@@ -8,10 +8,6 @@ package com.HighSchoolLibrary.enums;
  * @since 7/6/2022 - 19.43
  **/
 public enum CategoryType {
-    Науково_Популярна,
-    MAKEUP,
-    HAIR,
-    FACE,
-    BODY_AND_BATH,
-    FOR_MEN
+    Programming,
+    Fantasy;
 }

@@ -75,9 +75,13 @@ export class MyPageComponent implements OnInit {
     this.orderService.abolition(this.id, order).subscribe(()=>{this.search("order")})
   }
 
-  toreTheBook(){
-    console.log(this.penaltyCreate)
-    this.penaltyService.create(this.penaltyCreate).subscribe(()=>{this.setPage("penalty")})
+  createPenalty(){
+    this.penaltyService.create(this.penaltyCreate).subscribe((data:any)=>{
+      this.setPage("penalty")
+      if (data == true){
+        window.alert("Ви створили штраф")
+      }
+    })
   }
 
   setDescription(event:any){

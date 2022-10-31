@@ -10,6 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication//(exclude = {DataSourceAutoConfiguration.class })
 @PropertySource("classpath:application.properties")
 @EnableScheduling
+@EnableJpaRepositories("com.HighSchoolLibrary.repositoriesJPA")
+@EnableMongoRepositories(basePackages = "com.HighSchoolLibrary.repositoriesMongo")
 public class HighSchoolLibraryApplication {
 
 	public static void main(String[] args) {
