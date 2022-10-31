@@ -1,6 +1,7 @@
 package com.HighSchoolLibrary.services.impls;
 
 
+import com.HighSchoolLibrary.controller.UserController;
 import com.HighSchoolLibrary.dto.BookMap;
 import com.HighSchoolLibrary.dto.OrderDTO;
 import com.HighSchoolLibrary.dto.PageDTO;
@@ -18,6 +19,8 @@ import com.HighSchoolLibrary.repositoriesJPA.UsersRepository;
 import com.HighSchoolLibrary.repositoriesMongo.OrderRepository;
 import com.HighSchoolLibrary.repositoriesMongo.PenaltyRepository;
 import com.HighSchoolLibrary.services.OrderService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -53,6 +56,7 @@ public class OrderServiceImpl implements OrderService {
     private final UsersRepository usersRepository;
     private final BookRepository bookRepository;
     private final PenaltyRepository penaltyRepository;
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final ZoneId zid = ZoneId.of("Europe/Kiev");
 
 
@@ -83,7 +87,7 @@ public class OrderServiceImpl implements OrderService {
         queryPage.with(pageable);
         List<Order> orders = mongoTemplate.find(queryPage, Order.class);
         dto.setContent(orders.stream().map(mapper::toDto).collect(Collectors.toList()));
-        System.out.println(dto.getContent());
+        LOGGER.info(dto.getContent().toString());
         return dto;
     }
 
@@ -100,7 +104,7 @@ public class OrderServiceImpl implements OrderService {
         AggregationResults<BookMap> groupResults
                 = mongoTemplate.aggregate(agg, Order.class, BookMap.class);
         List<BookMap> result = groupResults.getMappedResults();
-        System.out.println(result);
+        LOGGER.info(result.toString());
         return result;
     }
 
